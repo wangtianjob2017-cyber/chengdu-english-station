@@ -1,0 +1,195 @@
+# Decap CMS 在线后台配置
+# 上线前必须把 repo 和 base_url 替换成你自己的 GitHub 仓库和 OAuth 服务地址。
+
+backend:
+  name: github
+  repo: wangtianjob2017-cyber/chengdu-english-station
+  branch: main
+  base_url: https://YOUR-OAUTH-PROXY-DOMAIN
+  commit_messages:
+    create: "cms: 新增 {{collection}} {{slug}}"
+    update: "cms: 更新 {{collection}} {{slug}}"
+    delete: "cms: 删除 {{collection}} {{slug}}"
+    uploadMedia: "cms: 上传文件 {{path}}"
+    deleteMedia: "cms: 删除文件 {{path}}"
+
+media_folder: assets/downloads
+public_folder: assets/downloads
+publish_mode: editorial_workflow
+locale: zh_Hans
+site_url: https://wangtianjob2017-cyber.github.io/chengdu-english-station/
+display_url: https://wangtianjob2017-cyber.github.io/chengdu-english-station/
+show_preview_links: false
+search: true
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: resources_data
+    label: 免费资料
+    files:
+      - name: resources
+        label: 资料列表
+        file: data/resources.json
+        format: json
+        fields:
+          - name: resources
+            label: 资料
+            label_singular: 资料
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { name: id, label: ID, widget: string, hint: "建议使用英文、数字和短横线，必须唯一。" }
+              - { name: title, label: 标题, widget: string }
+              - { name: grade, label: 年级, widget: select, required: false, options: ["七年级", "八年级", "九年级", "全学段", "通用"] }
+              - name: type
+                label: A/B卷题型
+                widget: select
+                required: false
+                options:
+                  - ""
+                  - 一、听句子选答语
+                  - 二、听句子选图片
+                  - 三、听对话选答案
+                  - 四、听短文填信息
+                  - 五、选短语
+                  - 六、补全对话
+                  - 七、完形填空
+                  - 八、阅读理解
+                  - 一、短文填空（十二选十）
+                  - 二、补全短文（六选五）
+                  - 三、阅读表达：A完成图表；B回答问题
+                  - 四、书面表达（写作）
+              - { name: level, label: 难度, widget: select, required: false, options: ["基础", "提升", "冲刺", "高分"] }
+              - { name: target, label: 适合对象, widget: text, required: false }
+              - { name: description, label: 简介, widget: text }
+              - { name: usage, label: 使用方法, widget: text, required: false }
+              - name: contents
+                label: 包含内容
+                widget: list
+                required: false
+                field: { name: item, label: 内容项, widget: string }
+              - { name: file, label: PDF 文件, widget: file, required: false }
+              - { name: featured, label: 首页推荐, widget: boolean, default: false, required: false }
+              - { name: status, label: 状态, widget: select, options: ["published", "draft"], default: "published" }
+              - name: tags
+                label: 标签
+                widget: list
+                required: false
+                field: { name: tag, label: 标签, widget: string }
+              - { name: updatedAt, label: 更新时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+              - { name: category, label: 分类, widget: string, required: false, hint: "如：A卷题型、B卷题型、词汇中心、基础能力、学习规划、家长工具。" }
+              - { name: skill, label: 能力标签, widget: string, required: false, hint: "词汇中心资料建议填写：词汇。" }
+              - { name: vocabCategory, label: 词汇分类, widget: select, required: false, options: ["", "同步词汇", "中考高频词", "易错易混词", "词汇训练"] }
+
+  - name: articles_data
+    label: 备考文章
+    files:
+      - name: articles
+        label: 文章列表
+        file: data/articles.json
+        format: json
+        fields:
+          - name: articles
+            label: 文章
+            label_singular: 文章
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { name: id, label: ID, widget: string, hint: "建议使用英文、数字和短横线，必须唯一。" }
+              - { name: title, label: 标题, widget: string }
+              - { name: category, label: 分类, widget: string }
+              - { name: target, label: 适合人群, widget: text, required: false }
+              - { name: description, label: 摘要, widget: text }
+              - { name: url, label: 文章链接, widget: string, required: false, hint: "通常填写 article-detail.html?id=文章ID。" }
+              - { name: featured, label: 首页推荐, widget: boolean, default: false, required: false }
+              - { name: status, label: 状态, widget: select, options: ["published", "draft"], default: "published" }
+              - name: tags
+                label: 标签
+                widget: list
+                required: false
+                field: { name: tag, label: 标签, widget: string }
+              - { name: date, label: 发布时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+              - { name: updatedAt, label: 更新时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+              - name: content
+                label: 正文
+                widget: list
+                required: false
+                summary: "{{fields.heading}}"
+                fields:
+                  - { name: heading, label: 小标题, widget: string, required: false }
+                  - name: paragraphs
+                    label: 段落
+                    widget: list
+                    required: false
+                    field: { name: paragraph, label: 段落, widget: text }
+              - name: faq
+                label: FAQ
+                widget: list
+                required: false
+                fields:
+                  - { name: question, label: 问题, widget: string }
+                  - { name: answer, label: 回答, widget: text }
+              - name: relatedResourceTypes
+                label: 关联资料题型
+                widget: list
+                required: false
+                field: { name: type, label: 题型, widget: string }
+
+  - name: site_config
+    label: 网站配置
+    files:
+      - name: site_config
+        label: 基础配置与首页板块
+        file: data/site-config.json
+        format: json
+        fields:
+          - { name: siteName, label: 网站名称, widget: string }
+          - { name: siteSubtitle, label: 网站副标题, widget: text }
+          - { name: contactText, label: 联系方式文字, widget: text, required: false }
+          - { name: copyrightText, label: 版权文字, widget: string, required: false }
+          - name: navItems
+            label: 顶部导航
+            widget: list
+            summary: "{{fields.order}} - {{fields.label}}"
+            fields:
+              - { name: label, label: 名称, widget: string }
+              - { name: url, label: 链接, widget: string }
+              - { name: enabled, label: 显示, widget: boolean, default: true }
+              - { name: order, label: 排序, widget: number, value_type: int, min: 1 }
+          - name: footerLinks
+            label: 页脚链接
+            widget: list
+            required: false
+            summary: "{{fields.label}}"
+            fields:
+              - { name: label, label: 名称, widget: string }
+              - { name: url, label: 链接, widget: string }
+              - { name: enabled, label: 显示, widget: boolean, default: true }
+          - name: homeSections
+            label: 首页板块
+            widget: list
+            summary: "{{fields.order}} - {{fields.title}}"
+            fields:
+              - { name: id, label: ID, widget: string }
+              - { name: type, label: 类型, widget: string }
+              - { name: title, label: 标题, widget: string, required: false }
+              - { name: subtitle, label: 说明, widget: text, required: false }
+              - { name: enabled, label: 显示, widget: boolean, default: true }
+              - { name: order, label: 排序, widget: number, value_type: int, min: 1 }
+              - { name: limit, label: 显示数量, widget: number, value_type: int, required: false, default: 0 }
+              - { name: linkText, label: 按钮文字, widget: string, required: false }
+              - { name: linkUrl, label: 按钮链接, widget: string, required: false }
+          - name: topicGroups
+            label: A/B卷题型
+            widget: list
+            summary: "{{fields.group}}"
+            fields:
+              - { name: group, label: 分组名称, widget: string }
+              - { name: description, label: 分组说明, widget: text, required: false }
+              - name: items
+                label: 题型
+                widget: list
+                field: { name: item, label: 题型名称, widget: string }

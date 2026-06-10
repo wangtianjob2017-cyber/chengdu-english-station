@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin.html
+
+Sitemap: https://wangtianjob2017-cyber.github.io/chengdu-english-station/sitemap.xml

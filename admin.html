@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>网站内容管理台｜成都中考英语加油站</title>
+    <meta name="description" content="成都中考英语加油站本地内容管理台，用于导入、编辑、导出资料、文章和首页配置 JSON。" />
+    <meta name="keywords" content="网站内容管理台,JSON编辑,静态网站管理,成都中考英语加油站" />
+    <meta property="og:title" content="网站内容管理台｜成都中考英语加油站" />
+    <meta property="og:description" content="用于本地编辑网站资料、文章和首页配置。第一版不会直接写回 GitHub，需要导出 JSON 后手动替换项目文件。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wangtianjob2017-cyber.github.io/chengdu-english-station/admin.html" />
+    <link rel="canonical" href="https://wangtianjob2017-cyber.github.io/chengdu-english-station/admin.html" />
+    <link rel="stylesheet" href="css/style.css?v=admin22" />
+  </head>
+  <body class="admin-body">
+    <header class="site-header">
+      <nav class="navbar" aria-label="主导航">
+        <a class="logo" href="index.html">成都中考英语加油站</a>
+        <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-menu">
+          <li><a href="index.html">返回网站首页</a></li>
+          <li><a href="resources.html">免费资料</a></li>
+          <li><a href="articles.html">备考文章</a></li>
+          <li><a href="about.html">关于本站</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero admin-hero">
+        <div class="page-hero-inner">
+          <p class="section-kicker">本地工具</p>
+          <h1>网站内容管理台</h1>
+          <p class="page-description">
+            用于本地编辑网站资料、文章和首页配置。第一版不会直接写回 GitHub，需要导出 JSON 后手动替换项目文件。
+          </p>
+        </div>
+      </section>
+
+      <section class="page-content admin-page">
+        <div class="admin-alert">
+          <strong>当前管理台为本地编辑工具。</strong>
+          <p>修改内容会先保存在本浏览器中。若要让网站正式更新，请导出 JSON 文件并替换 data 目录中的对应文件，再提交到 GitHub。</p>
+        </div>
+
+        <section class="admin-toolbar" aria-label="数据导入导出">
+          <div class="admin-tool-group">
+            <h2>数据导入</h2>
+            <div class="admin-button-row">
+              <button class="btn btn-secondary" type="button" data-import="resources">导入 resources.json</button>
+              <button class="btn btn-secondary" type="button" data-import="articles">导入 articles.json</button>
+              <button class="btn btn-secondary" type="button" data-import="siteConfig">导入 site-config.json</button>
+            </div>
+          </div>
+
+          <div class="admin-tool-group">
+            <h2>数据导出</h2>
+            <div class="admin-button-row">
+              <button class="btn btn-primary" type="button" data-export="resources">导出 resources.json</button>
+              <button class="btn btn-primary" type="button" data-export="articles">导出 articles.json</button>
+              <button class="btn btn-primary" type="button" data-export="siteConfig">导出 site-config.json</button>
+            </div>
+          </div>
+
+          <div class="admin-tool-group">
+            <h2>本地保存</h2>
+            <div class="admin-button-row">
+              <button class="btn btn-secondary" type="button" id="admin-save-local">保存到本浏览器</button>
+              <button class="btn btn-secondary" type="button" id="admin-restore-local">从本浏览器恢复</button>
+              <button class="admin-danger-btn" type="button" id="admin-clear-local">清空本地草稿</button>
+            </div>
+          </div>
+        </section>
+
+        <input class="admin-file-input" id="admin-import-file" type="file" accept=".json,application/json" />
+        <p class="admin-status" id="admin-status" role="status" aria-live="polite"></p>
+
+        <div class="admin-summary" id="admin-summary"></div>
+
+        <nav class="admin-tabs" aria-label="管理台标签">
+          <button class="is-active" type="button" data-admin-tab="articles">文章管理</button>
+          <button type="button" data-admin-tab="resources">资料管理</button>
+          <button type="button" data-admin-tab="home">首页板块管理</button>
+          <button type="button" data-admin-tab="nav">导航管理</button>
+          <button type="button" data-admin-tab="topics">题型与词汇说明</button>
+        </nav>
+
+        <section class="admin-panel is-active" id="admin-tab-articles">
+          <div class="admin-panel-header">
+            <div>
+              <p class="section-kicker">Articles</p>
+              <h2>文章管理</h2>
+            </div>
+            <button class="btn btn-primary" type="button" id="article-new">新增文章</button>
+          </div>
+
+          <div class="admin-filter-bar">
+            <label class="filter-field">
+              <span>搜索文章</span>
+              <input id="article-admin-search" type="search" placeholder="按标题、简介、适合人群搜索" />
+            </label>
+            <label class="filter-field">
+              <span>分类</span>
+              <select id="article-admin-category"></select>
+            </label>
+            <label class="filter-field">
+              <span>状态</span>
+              <select id="article-admin-status">
+                <option value="全部">全部</option>
+                <option value="published">published</option>
+                <option value="draft">draft</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="admin-editor" id="article-editor" hidden></div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>标题</th>
+                  <th>分类</th>
+                  <th>适合人群</th>
+                  <th>推荐</th>
+                  <th>状态</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="article-admin-list"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="admin-panel" id="admin-tab-resources">
+          <div class="admin-panel-header">
+            <div>
+              <p class="section-kicker">Resources</p>
+              <h2>资料管理</h2>
+            </div>
+            <button class="btn btn-primary" type="button" id="resource-new">新增资料</button>
+          </div>
+
+          <div class="admin-filter-bar">
+            <label class="filter-field">
+              <span>搜索资料</span>
+              <input id="resource-admin-search" type="search" placeholder="按标题、简介、适合对象搜索" />
+            </label>
+            <label class="filter-field">
+              <span>年级</span>
+              <select id="resource-admin-grade"></select>
+            </label>
+            <label class="filter-field">
+              <span>题型</span>
+              <select id="resource-admin-type"></select>
+            </label>
+            <label class="filter-field">
+              <span>分类</span>
+              <select id="resource-admin-category"></select>
+            </label>
+            <label class="filter-field">
+              <span>状态</span>
+              <select id="resource-admin-status">
+                <option value="全部">全部</option>
+                <option value="published">published</option>
+                <option value="draft">draft</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="admin-editor" id="resource-editor" hidden></div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>标题</th>
+                  <th>年级</th>
+                  <th>题型</th>
+                  <th>分类</th>
+                  <th>推荐</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="resource-admin-list"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="admin-panel" id="admin-tab-home">
+          <div class="admin-panel-header">
+            <div>
+              <p class="section-kicker">Home Sections</p>
+              <h2>首页板块管理</h2>
+            </div>
+            <button class="btn btn-primary" type="button" id="home-section-new">新增普通 CTA 板块</button>
+          </div>
+          <div class="admin-editor" id="home-section-editor" hidden></div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>type</th>
+                  <th>标题</th>
+                  <th>说明</th>
+                  <th>显示</th>
+                  <th>排序</th>
+                  <th>按钮</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="home-section-list"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="admin-panel" id="admin-tab-nav">
+          <div class="admin-panel-header">
+            <div>
+              <p class="section-kicker">Navigation</p>
+              <h2>导航管理</h2>
+            </div>
+            <button class="btn btn-primary" type="button" id="nav-item-new">新增导航项</button>
+          </div>
+          <div class="admin-editor" id="nav-item-editor" hidden></div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>名称</th>
+                  <th>链接</th>
+                  <th>显示</th>
+                  <th>排序</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="nav-item-list"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="admin-panel" id="admin-tab-topics">
+          <div class="admin-panel-header">
+            <div>
+              <p class="section-kicker">Topics</p>
+              <h2>A/B 卷题型管理说明</h2>
+            </div>
+          </div>
+
+          <div class="admin-alert admin-alert-soft">
+            <p>A/B 卷题型由 <code>data/site-config.json</code> 中的 <code>topicGroups</code> 管理。题型名称会影响 <code>resources.json</code> 中 <code>type</code> 字段的筛选匹配，不建议频繁改题型名称。</p>
+            <p>如果修改题型名称，请同步修改资料中的 <code>type</code> 字段。</p>
+          </div>
+
+          <div id="topic-group-editor" class="topic-group-admin"></div>
+
+          <div class="admin-alert admin-alert-soft">
+            <h3>词汇中心分类管理说明</h3>
+            <p>词汇中心资料不放进 <code>topicGroups</code>。</p>
+            <p>词汇资料建议使用：<code>category: "词汇中心"</code>、<code>skill: "词汇"</code>、<code>vocabCategory: "同步词汇" / "中考高频词" / "易错易混词" / "词汇训练"</code>。</p>
+          </div>
+        </section>
+
+        <section class="admin-security-note">
+          <h2>安全和权限说明</h2>
+          <ul>
+            <li>这是静态站本地管理工具，不是真正的后台系统。</li>
+            <li>本页面不应存放隐私数据。</li>
+            <li>不要在前端代码中写入 GitHub token、密码或任何密钥。</li>
+            <li>如果需要真正的在线后台，需要后续接入 CMS、数据库或服务器。</li>
+            <li>当前版本修改只在本地浏览器和导出的 JSON 中生效。</li>
+          </ul>
+        </section>
+      </section>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
