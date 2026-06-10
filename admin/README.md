@@ -106,12 +106,51 @@ vocab-100-days-plan.pdf
 常用字段：
 
 - `资料标题`：前台卡片和详情页显示的标题。
+- `唯一 ID`：系统编号，不显示给用户。建议英文小写、数字和短横线，例如 `res-grade9-reading-main-idea`。
 - `适用年级`：决定是否进入七年级、八年级、九年级页面。
 - `A/B 卷题型`：决定是否进入按题型页面。
 - `资料分类 / 所属板块`：决定资料属于 A卷题型、B卷题型、词汇中心、基础能力等。
 - `上传 PDF 文件`：上传资料文件。
 - `是否首页热门推荐`：打开后可能显示在首页热门资料区。
 - `发布状态`：`published` 显示，`draft` 隐藏。
+
+### 唯一 ID 填写规则
+
+唯一 ID 是系统识别资料或文章用的编号，不是给用户看的标题。
+
+规则：
+
+- 只能使用英文小写、数字和短横线。
+- 不要使用中文、空格、斜杠、问号或特殊符号。
+- 同一种内容里不能重复。
+
+资料 ID 示例：
+
+```text
+res-grade9-reading-main-idea
+res-vocab-100-days-plan
+res-writing-upgrade-sentences
+```
+
+文章 ID 示例：
+
+```text
+article-reading-main-idea
+article-vocab-forget
+article-grade8-drop
+```
+
+如果文章 ID 是：
+
+```text
+article-reading-main-idea
+```
+
+文章详情链接通常填写：
+
+```text
+article-detail.html?id=article-reading-main-idea
+```
 
 保存后，Decap CMS 会提交到 GitHub，Cloudflare Pages 重新部署后前台生效。
 

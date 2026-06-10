@@ -45,7 +45,7 @@ collections:
             minimize_collapsed: true
             hint: "新增资料后，status 选 published 才会在前台显示；featured 打开后可进入首页热门资料。"
             fields:
-              - { name: id, label: 唯一 ID, widget: string, hint: "必须唯一。建议英文、数字和短横线，例如 res-grade9-reading-main-idea。" }
+              - { name: id, label: 唯一 ID（系统编号）*, widget: string, hint: "这是资料的系统编号，不会直接显示给用户。必须唯一。只能用英文小写、数字和短横线，不要用中文、空格、斜杠或问号。例：res-grade9-reading-main-idea。" }
               - { name: title, label: 资料标题, widget: string, hint: "会显示在资料卡片、详情页和搜索结果中。" }
               - { name: grade, label: 适用年级, widget: select, required: false, options: ["七年级", "八年级", "九年级", "全学段", "通用"], hint: "选择后会自动进入对应年级资料页。" }
               - name: type
@@ -78,9 +78,9 @@ collections:
                 collapsed: true
                 hint: "会显示在资料详情页的“包含内容列表”中。"
                 field: { name: item, label: 内容项, widget: string }
-              - { name: file, label: 上传 PDF 文件, widget: file, required: false, hint: "上传后会保存到 assets/downloads/。如果暂时没有文件，可以留空或填 #。" }
-              - { name: featured, label: 是否首页热门推荐, widget: boolean, default: false, required: false, hint: "打开后可能显示在首页热门资料区，首页通常只取前几条推荐。" }
-              - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "published", hint: "published=前台显示；draft=后台保留但前台隐藏。" }
+              - { name: file, label: 上传 PDF 文件, widget: file, required: false, hint: "用于资料下载按钮。上传后会保存到 assets/downloads/。文件名建议英文或拼音，例如 grade9-reading-main-idea.pdf。暂时没有 PDF 时可以留空，前台会提示文件未上传。" }
+              - { name: featured, label: 是否首页热门推荐, widget: boolean, default: false, required: false, hint: "打开后可能显示在首页“热门资料下载”。不要打开太多，首页通常只展示前 6 条推荐。" }
+              - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "published", hint: "published=正式发布，前台能看到；draft=草稿/隐藏，前台不显示。暂时不用的内容建议改 draft，不要直接删除。" }
               - name: tags
                 label: 搜索标签
                 widget: list
@@ -89,9 +89,9 @@ collections:
                 hint: "用于搜索和内容归类，例如：成都中考英语、A卷、阅读理解。"
                 field: { name: tag, label: 标签, widget: string }
               - { name: updatedAt, label: 更新时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "建议每次较大修改后更新日期。" }
-              - { name: category, label: 资料分类 / 所属板块, widget: select, required: false, options: ["A卷题型", "B卷题型", "词汇中心", "基础能力", "学习规划", "家长工具", "中考冲刺"], hint: "决定资料属于哪个大板块。词汇资料请选择“词汇中心”。" }
-              - { name: skill, label: 技能标签, widget: string, required: false, hint: "词汇中心资料填写：词汇；其他资料可留空。" }
-              - { name: vocabCategory, label: 词汇中心分类, widget: select, required: false, options: ["", "同步词汇", "中考高频词", "易错易混词", "词汇训练"], hint: "只有 category=词汇中心 或 skill=词汇 时需要填写。" }
+              - { name: category, label: 资料分类 / 所属板块, widget: select, required: false, options: ["A卷题型", "B卷题型", "词汇中心", "基础能力", "学习规划", "家长工具", "中考冲刺"], hint: "决定资料进入哪个大板块。A/B 卷专项选 A卷题型 或 B卷题型；词汇资料选 词汇中心；学习计划、检查表可选 学习规划 或 家长工具。" }
+              - { name: skill, label: 技能标签, widget: string, required: false, hint: "只有词汇中心资料建议填写“词汇”。其他资料可以留空。" }
+              - { name: vocabCategory, label: 词汇中心分类, widget: select, required: false, options: ["", "同步词汇", "中考高频词", "易错易混词", "词汇训练"], hint: "只有资料分类=词汇中心时填写。用于词汇中心页面筛选，例如 同步词汇、词汇训练。" }
 
   - name: articles_data
     label: ② 备考文章管理
@@ -111,14 +111,14 @@ collections:
             minimize_collapsed: true
             hint: "新增文章后，status 选 published 才会在前台显示；featured 打开后可进入首页文章区。"
             fields:
-              - { name: id, label: 唯一 ID, widget: string, hint: "必须唯一。建议英文、数字和短横线，例如 article-reading-main-idea。" }
+              - { name: id, label: 唯一 ID（文章编号）*, widget: string, hint: "这是文章的系统编号，不显示给用户。必须唯一。只能用英文小写、数字和短横线。例：article-reading-main-idea、article-vocab-forget。不要用中文、空格或重复 ID。" }
               - { name: title, label: 文章标题, widget: string }
               - { name: category, label: 文章分类, widget: select, options: ["题型方法", "词汇学习", "分数提升", "分数段提升", "家长指导", "家长陪伴", "备考规划", "中考规划", "七年级基础", "八年级提升", "九年级冲刺", "阅读理解", "完形填空", "作文提升"], hint: "会用于文章页分类筛选。" }
               - { name: target, label: 适合人群, widget: text, required: false, hint: "例如：九年级学生家长、阅读理解失分较多的学生。" }
               - { name: description, label: 文章摘要, widget: text, hint: "显示在文章卡片中，建议 1-2 句话。" }
-              - { name: url, label: 文章详情链接, widget: string, required: false, hint: "通常填写 article-detail.html?id=文章ID，例如 article-detail.html?id=article-reading-main-idea。" }
-              - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "打开后可能显示在首页家长备考文章区。" }
-              - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "published", hint: "published=前台显示；draft=后台保留但前台隐藏。" }
+              - { name: url, label: 文章详情链接, widget: string, required: false, hint: "格式固定：article-detail.html?id=唯一ID。例如 ID 是 article-reading-main-idea，这里填 article-detail.html?id=article-reading-main-idea。" }
+              - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "打开后可能显示在首页“家长备考文章”。首页通常只展示前 3 篇推荐文章。" }
+              - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "published", hint: "published=正式发布，前台能看到；draft=草稿/隐藏，前台不显示。没写完的文章建议先 draft。" }
               - name: tags
                 label: 搜索标签
                 widget: list
@@ -154,7 +154,7 @@ collections:
                 widget: list
                 required: false
                 collapsed: true
-                hint: "填写 A/B 卷题型名称，文章详情页会推荐相应资料。"
+                hint: "填写 A/B 卷题型名称，文章详情页会推荐相应资料。必须和资料 type 一致，例如 八、阅读理解 或 四、书面表达（写作）。"
                 field: { name: type, label: 题型, widget: string }
 
   - name: site_config
@@ -237,13 +237,13 @@ collections:
     editor:
       preview: false
     fields:
-      - { name: id, label: 唯一 ID, widget: string, hint: "必须唯一，建议英文、数字和短横线，例如 article-reading-main-idea。保存后的文件名会使用这个 ID。" }
+      - { name: id, label: 唯一 ID（文章文件名）*, widget: string, hint: "这是文章文件名和系统编号。必须唯一。只能用英文小写、数字和短横线。例：article-reading-main-idea。保存后文件名会是 article-reading-main-idea.md。" }
       - { name: title, label: 文章标题, widget: string }
       - { name: category, label: 文章分类, widget: select, options: ["题型方法", "词汇学习", "分数提升", "分数段提升", "家长指导", "家长陪伴", "备考规划", "中考规划", "七年级基础", "八年级提升", "九年级冲刺", "阅读理解", "完形填空", "作文提升"], hint: "用于以后前台文章筛选。" }
       - { name: target, label: 适合人群, widget: text, required: false }
       - { name: description, label: 文章摘要, widget: text, hint: "建议 1-2 句话，后续可显示在文章卡片和 SEO 描述中。" }
-      - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false }
-      - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "draft", hint: "建议先 draft 存稿，确认后再改 published。" }
+      - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "预留字段。后续前台接入 Markdown 文章后，可用于首页推荐。" }
+      - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "draft", hint: "建议先 draft 存稿，确认无误后再改 published。当前 Markdown 入口主要用于写作和存稿。" }
       - name: tags
         label: 搜索标签
         widget: list
@@ -257,6 +257,6 @@ collections:
         widget: list
         required: false
         collapsed: true
-        hint: "填写 A/B 卷题型名称，例如 八、阅读理解。"
+        hint: "填写 A/B 卷题型名称，例如 八、阅读理解。后续前台接入 Markdown 文章后可用于推荐资料。"
         field: { name: type, label: 题型, widget: string }
       - { name: body, label: 正文 Markdown, widget: markdown, hint: "可以直接粘贴 Markdown 文章。用 ## 写小标题，用 - 写列表。" }
