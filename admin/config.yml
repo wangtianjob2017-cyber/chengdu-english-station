@@ -222,3 +222,41 @@ collections:
                 label: 题型
                 widget: list
                 field: { name: item, label: 题型名称, widget: string }
+
+  - name: markdown_articles
+    label: ④ Markdown 文章发布
+    label_singular: Markdown 文章
+    description: "适合写长文章。正文是一个大 Markdown 编辑器，不需要一段一段填表。当前入口用于发布和存稿，前台全面读取 Markdown 文章会在下一阶段接入。"
+    folder: content/articles
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    slug: "{{fields.id}}"
+    summary: "{{fields.category}}｜{{title}}"
+    editor:
+      preview: false
+    fields:
+      - { name: id, label: 唯一 ID, widget: string, hint: "必须唯一，建议英文、数字和短横线，例如 article-reading-main-idea。保存后的文件名会使用这个 ID。" }
+      - { name: title, label: 文章标题, widget: string }
+      - { name: category, label: 文章分类, widget: select, options: ["题型方法", "词汇学习", "分数提升", "分数段提升", "家长指导", "家长陪伴", "备考规划", "中考规划", "七年级基础", "八年级提升", "九年级冲刺", "阅读理解", "完形填空", "作文提升"], hint: "用于以后前台文章筛选。" }
+      - { name: target, label: 适合人群, widget: text, required: false }
+      - { name: description, label: 文章摘要, widget: text, hint: "建议 1-2 句话，后续可显示在文章卡片和 SEO 描述中。" }
+      - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false }
+      - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "draft", hint: "建议先 draft 存稿，确认后再改 published。" }
+      - name: tags
+        label: 搜索标签
+        widget: list
+        required: false
+        collapsed: true
+        field: { name: tag, label: 标签, widget: string }
+      - { name: date, label: 发布时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { name: updatedAt, label: 更新时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - name: relatedResourceTypes
+        label: 相关推荐资料题型
+        widget: list
+        required: false
+        collapsed: true
+        hint: "填写 A/B 卷题型名称，例如 八、阅读理解。"
+        field: { name: type, label: 题型, widget: string }
+      - { name: body, label: 正文 Markdown, widget: markdown, hint: "可以直接粘贴 Markdown 文章。用 ## 写小标题，用 - 写列表。" }
