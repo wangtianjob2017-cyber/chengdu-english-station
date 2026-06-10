@@ -162,6 +162,8 @@ data/resources.json
 
 所有备考文章都在 `data/articles.json` 中维护。
 
+也可以在在线后台使用“Markdown 文章发布”入口写长文章。Markdown 文章会保存到 `content/articles/`，并由 GitHub Action 自动生成 `data/markdown-articles.json`。前台文章页会同时读取 `data/articles.json` 和 `data/markdown-articles.json`，所以后台发布后通常等待 1-3 分钟，Cloudflare Pages 自动部署完成后即可在“备考文章”页看到。
+
 新增文章时，可以复制一篇已有文章，然后修改内容。每篇文章包含这些字段：
 
 ```text

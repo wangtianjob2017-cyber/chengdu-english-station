@@ -250,8 +250,9 @@ Markdown 基础写法：
 注意：
 
 - 当前 Markdown 文章入口已经可以在后台创建和保存文件。
-- 现阶段前台文章页仍主要读取 `data/articles.json`。
-- 下一阶段可以继续升级，让前台文章列表和详情页读取 `content/articles/*.md`。
+- Markdown 文章发布后，GitHub Action 会自动生成 `data/markdown-articles.json`。
+- 前台文章页会合并读取 `data/articles.json` 和 `data/markdown-articles.json`。
+- 发布后如果前台暂时没出现，通常是 GitHub Action 或 Cloudflare Pages 还在自动部署，等 1-3 分钟后刷新即可。
 
 ### 调整首页板块
 

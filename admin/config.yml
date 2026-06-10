@@ -226,7 +226,7 @@ collections:
   - name: markdown_articles
     label: ④ Markdown 文章发布
     label_singular: Markdown 文章
-    description: "适合写长文章。正文是一个大 Markdown 编辑器，不需要一段一段填表。当前入口用于发布和存稿，前台全面读取 Markdown 文章会在下一阶段接入。"
+    description: "适合写长文章。正文是一个大 Markdown 编辑器，不需要一段一段填表。发布后会由 GitHub Action 自动生成文章索引，稍等部署完成后会显示在前台备考文章页。"
     folder: content/articles
     create: true
     delete: true
@@ -239,11 +239,11 @@ collections:
     fields:
       - { name: id, label: 唯一 ID（文章文件名）*, widget: string, hint: "这是文章文件名和系统编号。必须唯一。只能用英文小写、数字和短横线。例：article-reading-main-idea。保存后文件名会是 article-reading-main-idea.md。" }
       - { name: title, label: 文章标题, widget: string }
-      - { name: category, label: 文章分类, widget: select, options: ["题型方法", "词汇学习", "分数提升", "分数段提升", "家长指导", "家长陪伴", "备考规划", "中考规划", "七年级基础", "八年级提升", "九年级冲刺", "阅读理解", "完形填空", "作文提升"], hint: "用于以后前台文章筛选。" }
+      - { name: category, label: 文章分类, widget: select, options: ["题型方法", "词汇学习", "分数提升", "分数段提升", "家长指导", "家长陪伴", "备考规划", "中考规划", "七年级基础", "八年级提升", "九年级冲刺", "阅读理解", "完形填空", "作文提升"], hint: "用于前台文章筛选。" }
       - { name: target, label: 适合人群, widget: text, required: false }
       - { name: description, label: 文章摘要, widget: text, hint: "建议 1-2 句话，后续可显示在文章卡片和 SEO 描述中。" }
-      - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "预留字段。后续前台接入 Markdown 文章后，可用于首页推荐。" }
-      - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "draft", hint: "建议先 draft 存稿，确认无误后再改 published。当前 Markdown 入口主要用于写作和存稿。" }
+      - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "打开后可参与首页文章推荐。首页只展示少量文章，不一定每篇推荐文章都会露出。" }
+      - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "draft", hint: "published=发布到前台；draft=草稿/隐藏。发布后通常需要等待 GitHub Action 和 Cloudflare Pages 完成自动更新。" }
       - name: tags
         label: 搜索标签
         widget: list
@@ -257,6 +257,6 @@ collections:
         widget: list
         required: false
         collapsed: true
-        hint: "填写 A/B 卷题型名称，例如 八、阅读理解。后续前台接入 Markdown 文章后可用于推荐资料。"
+        hint: "填写 A/B 卷题型名称，例如 八、阅读理解。文章详情页会据此推荐相关资料。"
         field: { name: type, label: 题型, widget: string }
       - { name: body, label: 正文 Markdown, widget: markdown, hint: "可以直接粘贴 Markdown 文章。用 ## 写小标题，用 - 写列表。" }

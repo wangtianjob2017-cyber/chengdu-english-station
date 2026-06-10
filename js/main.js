@@ -139,6 +139,18 @@ function getPublishedItems(items) {
   return items.filter((item) => !item.status || item.status === "published");
 }
 
+function mergeArticleLists(baseArticles, markdownArticles) {
+  const articleMap = new Map();
+
+  [...(baseArticles || []), ...(markdownArticles || [])].forEach((article) => {
+    if (article && article.id) {
+      articleMap.set(article.id, article);
+    }
+  });
+
+  return [...articleMap.values()];
+}
+
 function getAppSiteConfig() {
   if (window.STATIC_DATA_FALLBACK && window.STATIC_DATA_FALLBACK.siteConfig) {
     return window.STATIC_DATA_FALLBACK.siteConfig;
@@ -183,21 +195,23 @@ async function fetchJsonData(endpoint) {
 
 async function loadConfiguredData() {
   const endpoints = window.DATA_ENDPOINTS || {};
-  const [resourcesData, articlesData, siteConfigData] = await Promise.all([
+  const [resourcesData, articlesData, markdownArticlesData, siteConfigData] = await Promise.all([
     fetchJsonData(endpoints.resources),
     fetchJsonData(endpoints.articles),
+    fetchJsonData(endpoints.markdownArticles),
     fetchJsonData(endpoints.siteConfig),
   ]);
 
   const loadedResources = normalizeDataList(resourcesData, "resources");
   const loadedArticles = normalizeDataList(articlesData, "articles");
+  const loadedMarkdownArticles = normalizeDataList(markdownArticlesData, "articles") || [];
 
   if (loadedResources) {
     appResources = getPublishedItems(loadedResources);
   }
 
-  if (loadedArticles) {
-    appArticles = getPublishedItems(loadedArticles);
+  if (loadedArticles || loadedMarkdownArticles.length) {
+    appArticles = getPublishedItems(mergeArticleLists(loadedArticles || appArticles, loadedMarkdownArticles));
   }
 
   if (siteConfigData && typeof siteConfigData === "object") {
@@ -336,6 +350,67 @@ function escapeHTML(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function renderMarkdownArticle(markdown) {
+  const lines = String(markdown || "").split(/\r?\n/);
+  const blocks = [];
+  let paragraph = [];
+  let listItems = [];
+
+  function flushParagraph() {
+    if (!paragraph.length) {
+      return;
+    }
+
+    blocks.push(`<p>${escapeHTML(paragraph.join(" ").trim())}</p>`);
+    paragraph = [];
+  }
+
+  function flushList() {
+    if (!listItems.length) {
+      return;
+    }
+
+    blocks.push(`<ul>${listItems.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>`);
+    listItems = [];
+  }
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      flushParagraph();
+      flushList();
+      return;
+    }
+
+    const headingMatch = trimmed.match(/^(#{2,3})\s+(.+)$/);
+
+    if (headingMatch) {
+      flushParagraph();
+      flushList();
+      const level = headingMatch[1].length;
+      blocks.push(`<h${level}>${escapeHTML(headingMatch[2])}</h${level}>`);
+      return;
+    }
+
+    const listMatch = trimmed.match(/^[-*]\s+(.+)$/);
+
+    if (listMatch) {
+      flushParagraph();
+      listItems.push(listMatch[1]);
+      return;
+    }
+
+    flushList();
+    paragraph.push(trimmed);
+  });
+
+  flushParagraph();
+  flushList();
+
+  return blocks.join("");
 }
 
 function createTopicUrl(type) {
@@ -844,16 +919,19 @@ function renderResourceDetail() {
 }
 
 function createArticleCard(article) {
+  const articleDate = article.date || article.updatedAt || "";
+  const articleUrl = article.url || `article-detail.html?id=${encodeURIComponent(article.id)}`;
+
   return `
     <article class="article-card">
       <div class="article-meta">
         <span>${escapeHTML(article.category)}</span>
-        <time datetime="${escapeHTML(article.date)}">${escapeHTML(article.date)}</time>
+        <time datetime="${escapeHTML(articleDate)}">${escapeHTML(articleDate)}</time>
       </div>
       <h3>${escapeHTML(article.title)}</h3>
       <p class="article-target">适合人群：${escapeHTML(article.target)}</p>
       <p>${escapeHTML(article.description)}</p>
-      <a class="btn btn-primary" href="article-detail.html?id=${encodeURIComponent(article.id)}">阅读文章</a>
+      <a class="btn btn-primary" href="${escapeHTML(articleUrl)}">阅读文章</a>
     </article>
   `;
 }
@@ -936,9 +1014,59 @@ function renderArticleNotFound() {
 }
 
 function getArticleRelatedResources(article) {
+  const relatedTypes = Array.isArray(article.relatedResourceTypes) ? article.relatedResourceTypes : [];
+
   return appResources
-    .filter((resource) => article.relatedResourceTypes.includes(resource.type))
+    .filter((resource) => relatedTypes.includes(resource.type))
     .slice(0, 3);
+}
+
+function renderArticleBody(article) {
+  if (article.contentMarkdown) {
+    return renderMarkdownArticle(article.contentMarkdown);
+  }
+
+  if (Array.isArray(article.content)) {
+    return article.content
+      .map((section) => {
+        const paragraphs = Array.isArray(section.paragraphs) ? section.paragraphs : [];
+        return `
+          <section>
+            <h2>${escapeHTML(section.heading || "正文")}</h2>
+            ${paragraphs.map((paragraph) => `<p>${escapeHTML(paragraph)}</p>`).join("")}
+          </section>
+        `;
+      })
+      .join("");
+  }
+
+  if (typeof article.content === "string") {
+    return `<p>${escapeHTML(article.content)}</p>`;
+  }
+
+  return `<p>${escapeHTML(article.description || "这篇文章内容正在整理中。")}</p>`;
+}
+
+function renderArticleFaq(article) {
+  if (!Array.isArray(article.faq) || !article.faq.length) {
+    return "";
+  }
+
+  return `
+    <section class="faq-section" aria-labelledby="article-faq-title">
+      <h2 id="article-faq-title">FAQ 问答区</h2>
+      ${article.faq
+        .map(
+          (item) => `
+            <article class="faq-item">
+              <h3>${escapeHTML(item.question)}</h3>
+              <p>${escapeHTML(item.answer)}</p>
+            </article>
+          `
+        )
+        .join("")}
+    </section>
+  `;
 }
 
 function renderArticleDetail() {
@@ -956,6 +1084,7 @@ function renderArticleDetail() {
 
   const metaDescription = document.querySelector("meta[name='description']");
   const relatedResources = getArticleRelatedResources(article);
+  const articleDate = article.date || article.updatedAt || "";
 
   document.title = `${article.title} - 成都中考英语加油站`;
 
@@ -976,33 +1105,11 @@ function renderArticleDetail() {
       <div class="article-body">
         <div class="article-meta article-detail-meta">
           <span>${escapeHTML(article.category)}</span>
-          <time datetime="${escapeHTML(article.date)}">${escapeHTML(article.date)}</time>
+          <time datetime="${escapeHTML(articleDate)}">${escapeHTML(articleDate)}</time>
         </div>
         <p class="article-target">适合人群：${escapeHTML(article.target)}</p>
-        ${article.content
-          .map(
-            (section) => `
-              <section>
-                <h2>${escapeHTML(section.heading)}</h2>
-                ${section.paragraphs.map((paragraph) => `<p>${escapeHTML(paragraph)}</p>`).join("")}
-              </section>
-            `
-          )
-          .join("")}
-
-        <section class="faq-section" aria-labelledby="article-faq-title">
-          <h2 id="article-faq-title">FAQ 问答区</h2>
-          ${article.faq
-            .map(
-              (item) => `
-                <article class="faq-item">
-                  <h3>${escapeHTML(item.question)}</h3>
-                  <p>${escapeHTML(item.answer)}</p>
-                </article>
-              `
-            )
-            .join("")}
-        </section>
+        ${renderArticleBody(article)}
+        ${renderArticleFaq(article)}
       </div>
     </article>
 

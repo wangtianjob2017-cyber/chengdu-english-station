@@ -2,6 +2,7 @@
 window.DATA_ENDPOINTS = {
   resources: "data/resources.json",
   articles: "data/articles.json",
+  markdownArticles: "data/markdown-articles.json",
   siteConfig: "data/site-config.json",
 };
 

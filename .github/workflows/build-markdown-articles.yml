@@ -1,0 +1,39 @@
+name: Build Markdown Article Index
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "content/articles/**"
+      - "scripts/build-markdown-articles.js"
+      - ".github/workflows/build-markdown-articles.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-markdown-articles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Markdown article index
+        run: node scripts/build-markdown-articles.js
+
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- data/markdown-articles.json; then
+            echo "Markdown article index is already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/markdown-articles.json
+          git commit -m "cms: 更新 Markdown 文章索引"
+          git push
