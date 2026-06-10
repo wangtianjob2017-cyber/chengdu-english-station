@@ -245,7 +245,7 @@ file: "assets/downloads/sample-unit1-vocab.pdf"
 https://你的用户名.github.io/chengdu-english-station/
 ```
 
-上线后，请把项目中的 `https://wangtianjob2017-cyber.github.io/chengdu-english-station/` 替换成正式访问地址。需要替换的位置包括：
+上线后，请把项目中的 `https://chengdu-english-station.pages.dev/` 替换成正式访问地址。需要替换的位置包括：
 
 - 每个 HTML 页面中的 `canonical`
 - 每个 HTML 页面中的 `og:url`
@@ -450,8 +450,8 @@ admin/config.yml
 ```yaml
 repo: wangtianjob2017-cyber/chengdu-english-station
 base_url: https://chengdu-english-cms-oauth.wangtianjob2017.workers.dev
-site_url: https://wangtianjob2017-cyber.github.io/chengdu-english-station/
-display_url: https://wangtianjob2017-cyber.github.io/chengdu-english-station/
+site_url: https://chengdu-english-station.pages.dev/
+display_url: https://chengdu-english-station.pages.dev/
 ```
 
 第六步：访问后台。
