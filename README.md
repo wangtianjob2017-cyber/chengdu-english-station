@@ -359,7 +359,7 @@ admin/config.yml
 
 ```yaml
 repo: wangtianjob2017-cyber/chengdu-english-station
-base_url: https://YOUR-OAUTH-PROXY-DOMAIN
+base_url: https://chengdu-english-cms-oauth.wangtianjob2017.workers.dev
 ```
 
 说明：
@@ -449,7 +449,7 @@ admin/config.yml
 
 ```yaml
 repo: wangtianjob2017-cyber/chengdu-english-station
-base_url: https://YOUR-OAUTH-PROXY-DOMAIN
+base_url: https://chengdu-english-cms-oauth.wangtianjob2017.workers.dev
 site_url: https://wangtianjob2017-cyber.github.io/chengdu-english-station/
 display_url: https://wangtianjob2017-cyber.github.io/chengdu-english-station/
 ```

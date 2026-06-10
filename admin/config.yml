@@ -5,7 +5,7 @@ backend:
   name: github
   repo: wangtianjob2017-cyber/chengdu-english-station
   branch: main
-  base_url: https://YOUR-OAUTH-PROXY-DOMAIN
+  base_url: https://chengdu-english-cms-oauth.wangtianjob2017.workers.dev
   commit_messages:
     create: "cms: 新增 {{collection}} {{slug}}"
     update: "cms: 更新 {{collection}} {{slug}}"
