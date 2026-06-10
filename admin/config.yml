@@ -28,26 +28,31 @@ slug:
 
 collections:
   - name: resources_data
-    label: 免费资料
+    label: ① 免费资料 / PDF 管理
+    description: "新增、修改、隐藏资料，上传 PDF，并设置资料出现在哪个年级、题型、词汇中心或首页热门板块。"
     files:
       - name: resources
-        label: 资料列表
+        label: 资料库（资料卡片与 PDF）
         file: data/resources.json
         format: json
         fields:
           - name: resources
-            label: 资料
+            label: 资料列表
             label_singular: 资料
             widget: list
-            summary: "{{fields.title}}"
+            summary: "{{fields.grade}}｜{{fields.title}}"
+            collapsed: true
+            minimize_collapsed: true
+            hint: "新增资料后，status 选 published 才会在前台显示；featured 打开后可进入首页热门资料。"
             fields:
-              - { name: id, label: ID, widget: string, hint: "建议使用英文、数字和短横线，必须唯一。" }
-              - { name: title, label: 标题, widget: string }
-              - { name: grade, label: 年级, widget: select, required: false, options: ["七年级", "八年级", "九年级", "全学段", "通用"] }
+              - { name: id, label: 唯一 ID, widget: string, hint: "必须唯一。建议英文、数字和短横线，例如 res-grade9-reading-main-idea。" }
+              - { name: title, label: 资料标题, widget: string, hint: "会显示在资料卡片、详情页和搜索结果中。" }
+              - { name: grade, label: 适用年级, widget: select, required: false, options: ["七年级", "八年级", "九年级", "全学段", "通用"], hint: "选择后会自动进入对应年级资料页。" }
               - name: type
-                label: A/B卷题型
+                label: A/B 卷题型
                 widget: select
                 required: false
+                hint: "只有属于成都中考 A/B 卷题型的资料才填写这里。词汇中心资料不要用“词汇默写”当题型。"
                 options:
                   - ""
                   - 一、听句子选答语
@@ -62,62 +67,73 @@ collections:
                   - 二、补全短文（六选五）
                   - 三、阅读表达：A完成图表；B回答问题
                   - 四、书面表达（写作）
-              - { name: level, label: 难度, widget: select, required: false, options: ["基础", "提升", "冲刺", "高分"] }
-              - { name: target, label: 适合对象, widget: text, required: false }
-              - { name: description, label: 简介, widget: text }
-              - { name: usage, label: 使用方法, widget: text, required: false }
+              - { name: level, label: 难度, widget: select, required: false, default: "基础", options: ["基础", "提升", "冲刺", "高分"] }
+              - { name: target, label: 适合对象, widget: text, required: false, hint: "例如：阅读定位困难、作文表达单一的九年级学生。" }
+              - { name: description, label: 资料简介, widget: text, hint: "建议 1-2 句话，说明资料解决什么问题。" }
+              - { name: usage, label: 使用方法, widget: text, required: false, hint: "告诉家长和学生怎么用，例如每周几次、先做什么、如何订正。" }
               - name: contents
-                label: 包含内容
+                label: 资料包含内容
                 widget: list
                 required: false
+                collapsed: true
+                hint: "会显示在资料详情页的“包含内容列表”中。"
                 field: { name: item, label: 内容项, widget: string }
-              - { name: file, label: PDF 文件, widget: file, required: false }
-              - { name: featured, label: 首页推荐, widget: boolean, default: false, required: false }
-              - { name: status, label: 状态, widget: select, options: ["published", "draft"], default: "published" }
+              - { name: file, label: 上传 PDF 文件, widget: file, required: false, hint: "上传后会保存到 assets/downloads/。如果暂时没有文件，可以留空或填 #。" }
+              - { name: featured, label: 是否首页热门推荐, widget: boolean, default: false, required: false, hint: "打开后可能显示在首页热门资料区，首页通常只取前几条推荐。" }
+              - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "published", hint: "published=前台显示；draft=后台保留但前台隐藏。" }
               - name: tags
-                label: 标签
+                label: 搜索标签
                 widget: list
                 required: false
+                collapsed: true
+                hint: "用于搜索和内容归类，例如：成都中考英语、A卷、阅读理解。"
                 field: { name: tag, label: 标签, widget: string }
-              - { name: updatedAt, label: 更新时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
-              - { name: category, label: 分类, widget: string, required: false, hint: "如：A卷题型、B卷题型、词汇中心、基础能力、学习规划、家长工具。" }
-              - { name: skill, label: 能力标签, widget: string, required: false, hint: "词汇中心资料建议填写：词汇。" }
-              - { name: vocabCategory, label: 词汇分类, widget: select, required: false, options: ["", "同步词汇", "中考高频词", "易错易混词", "词汇训练"] }
+              - { name: updatedAt, label: 更新时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false, hint: "建议每次较大修改后更新日期。" }
+              - { name: category, label: 资料分类 / 所属板块, widget: select, required: false, options: ["A卷题型", "B卷题型", "词汇中心", "基础能力", "学习规划", "家长工具", "中考冲刺"], hint: "决定资料属于哪个大板块。词汇资料请选择“词汇中心”。" }
+              - { name: skill, label: 技能标签, widget: string, required: false, hint: "词汇中心资料填写：词汇；其他资料可留空。" }
+              - { name: vocabCategory, label: 词汇中心分类, widget: select, required: false, options: ["", "同步词汇", "中考高频词", "易错易混词", "词汇训练"], hint: "只有 category=词汇中心 或 skill=词汇 时需要填写。" }
 
   - name: articles_data
-    label: 备考文章
+    label: ② 备考文章管理
+    description: "新增、修改、隐藏备考文章，设置首页推荐文章，并关联相关资料题型。"
     files:
       - name: articles
-        label: 文章列表
+        label: 文章库（方法、规划、家长指导）
         file: data/articles.json
         format: json
         fields:
           - name: articles
-            label: 文章
+            label: 文章列表
             label_singular: 文章
             widget: list
-            summary: "{{fields.title}}"
+            summary: "{{fields.category}}｜{{fields.title}}"
+            collapsed: true
+            minimize_collapsed: true
+            hint: "新增文章后，status 选 published 才会在前台显示；featured 打开后可进入首页文章区。"
             fields:
-              - { name: id, label: ID, widget: string, hint: "建议使用英文、数字和短横线，必须唯一。" }
-              - { name: title, label: 标题, widget: string }
-              - { name: category, label: 分类, widget: string }
-              - { name: target, label: 适合人群, widget: text, required: false }
-              - { name: description, label: 摘要, widget: text }
-              - { name: url, label: 文章链接, widget: string, required: false, hint: "通常填写 article-detail.html?id=文章ID。" }
-              - { name: featured, label: 首页推荐, widget: boolean, default: false, required: false }
-              - { name: status, label: 状态, widget: select, options: ["published", "draft"], default: "published" }
+              - { name: id, label: 唯一 ID, widget: string, hint: "必须唯一。建议英文、数字和短横线，例如 article-reading-main-idea。" }
+              - { name: title, label: 文章标题, widget: string }
+              - { name: category, label: 文章分类, widget: select, options: ["题型方法", "词汇学习", "分数提升", "分数段提升", "家长指导", "家长陪伴", "备考规划", "中考规划", "七年级基础", "八年级提升", "九年级冲刺", "阅读理解", "完形填空", "作文提升"], hint: "会用于文章页分类筛选。" }
+              - { name: target, label: 适合人群, widget: text, required: false, hint: "例如：九年级学生家长、阅读理解失分较多的学生。" }
+              - { name: description, label: 文章摘要, widget: text, hint: "显示在文章卡片中，建议 1-2 句话。" }
+              - { name: url, label: 文章详情链接, widget: string, required: false, hint: "通常填写 article-detail.html?id=文章ID，例如 article-detail.html?id=article-reading-main-idea。" }
+              - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "打开后可能显示在首页家长备考文章区。" }
+              - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "published", hint: "published=前台显示；draft=后台保留但前台隐藏。" }
               - name: tags
-                label: 标签
+                label: 搜索标签
                 widget: list
                 required: false
+                collapsed: true
                 field: { name: tag, label: 标签, widget: string }
               - { name: date, label: 发布时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
               - { name: updatedAt, label: 更新时间, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
               - name: content
-                label: 正文
+                label: 正文内容
                 widget: list
                 required: false
                 summary: "{{fields.heading}}"
+                collapsed: true
+                hint: "每个小标题下面可以添加多段正文。建议一篇文章至少 3 个小标题。"
                 fields:
                   - { name: heading, label: 小标题, widget: string, required: false }
                   - name: paragraphs
@@ -126,34 +142,40 @@ collections:
                     required: false
                     field: { name: paragraph, label: 段落, widget: text }
               - name: faq
-                label: FAQ
+                label: FAQ 问答
                 widget: list
                 required: false
+                collapsed: true
                 fields:
                   - { name: question, label: 问题, widget: string }
                   - { name: answer, label: 回答, widget: text }
               - name: relatedResourceTypes
-                label: 关联资料题型
+                label: 相关推荐资料题型
                 widget: list
                 required: false
+                collapsed: true
+                hint: "填写 A/B 卷题型名称，文章详情页会推荐相应资料。"
                 field: { name: type, label: 题型, widget: string }
 
   - name: site_config
-    label: 网站配置
+    label: ③ 网站首页 / 导航配置
+    description: "修改网站名称、导航、首页板块、页脚链接和 A/B 卷题型。"
     files:
       - name: site_config
-        label: 基础配置与首页板块
+        label: 网站基础设置
         file: data/site-config.json
         format: json
         fields:
-          - { name: siteName, label: 网站名称, widget: string }
-          - { name: siteSubtitle, label: 网站副标题, widget: text }
-          - { name: contactText, label: 联系方式文字, widget: text, required: false }
+          - { name: siteName, label: 网站名称 / Logo 文案, widget: string, hint: "会用于导航 Logo 和部分页面标题。" }
+          - { name: siteSubtitle, label: 网站副标题 / 首页主说明, widget: text, hint: "会用于首页首屏说明。" }
+          - { name: contactText, label: 联系方式文字, widget: text, required: false, hint: "例如邮箱、公众号、微信号占位说明。" }
           - { name: copyrightText, label: 版权文字, widget: string, required: false }
           - name: navItems
-            label: 顶部导航
+            label: 顶部导航菜单
             widget: list
             summary: "{{fields.order}} - {{fields.label}}"
+            collapsed: true
+            hint: "enabled=false 可以隐藏导航项；order 数字越小越靠前。"
             fields:
               - { name: label, label: 名称, widget: string }
               - { name: url, label: 链接, widget: string }
@@ -164,28 +186,35 @@ collections:
             widget: list
             required: false
             summary: "{{fields.label}}"
+            collapsed: true
+            hint: "用于页脚补充入口，例如精品资料包、作文批改、合作说明。"
             fields:
               - { name: label, label: 名称, widget: string }
               - { name: url, label: 链接, widget: string }
               - { name: enabled, label: 显示, widget: boolean, default: true }
           - name: homeSections
-            label: 首页板块
+            label: 首页板块显示与排序
             widget: list
             summary: "{{fields.order}} - {{fields.title}}"
+            collapsed: true
+            minimize_collapsed: true
+            hint: "主要用于改首页板块标题、说明、显示/隐藏和排序。不要随意修改 id 和 type。"
             fields:
-              - { name: id, label: ID, widget: string }
-              - { name: type, label: 类型, widget: string }
-              - { name: title, label: 标题, widget: string, required: false }
-              - { name: subtitle, label: 说明, widget: text, required: false }
-              - { name: enabled, label: 显示, widget: boolean, default: true }
-              - { name: order, label: 排序, widget: number, value_type: int, min: 1 }
-              - { name: limit, label: 显示数量, widget: number, value_type: int, required: false, default: 0 }
+              - { name: id, label: 板块 ID, widget: string, hint: "系统识别用，不建议修改。" }
+              - { name: type, label: 板块类型, widget: string, hint: "系统识别用，不建议修改。" }
+              - { name: title, label: 板块标题, widget: string, required: false }
+              - { name: subtitle, label: 板块说明, widget: text, required: false }
+              - { name: enabled, label: 是否显示这个板块, widget: boolean, default: true, hint: "关闭后首页不显示这个板块。" }
+              - { name: order, label: 排序, widget: number, value_type: int, min: 1, hint: "数字越小越靠前。" }
+              - { name: limit, label: 显示数量, widget: number, value_type: int, required: false, default: 0, hint: "例如首页热门资料显示 6 条，首页文章显示 3 条。" }
               - { name: linkText, label: 按钮文字, widget: string, required: false }
               - { name: linkUrl, label: 按钮链接, widget: string, required: false }
           - name: topicGroups
-            label: A/B卷题型
+            label: A/B 卷题型导航
             widget: list
             summary: "{{fields.group}}"
+            collapsed: true
+            hint: "题型名称会影响资料 type 筛选。修改题型名称后，要同步修改资料里的 type 字段。"
             fields:
               - { name: group, label: 分组名称, widget: string }
               - { name: description, label: 分组说明, widget: text, required: false }
