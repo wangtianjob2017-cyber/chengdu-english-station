@@ -1,0 +1,142 @@
+:root {
+  --admin-blue: #2563eb;
+  --admin-blue-dark: #12315f;
+  --admin-blue-soft: #eaf2ff;
+  --admin-yellow: #fff3c4;
+  --admin-bg: #f5f8fc;
+  --admin-text: #1f2937;
+  --admin-border: #d9e3f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+.admin-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(255, 243, 196, 0.72)),
+    var(--admin-bg);
+}
+
+.admin-loading.is-hidden {
+  display: none;
+}
+
+.admin-loading-card {
+  width: min(520px, 100%);
+  padding: 32px;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 24px 70px rgba(18, 49, 95, 0.16);
+}
+
+.admin-kicker {
+  margin: 0 0 10px;
+  color: var(--admin-blue);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.admin-loading-card h1 {
+  margin: 0 0 12px;
+  color: var(--admin-blue-dark);
+  font-size: 1.8rem;
+  line-height: 1.25;
+}
+
+.admin-loading-card p {
+  margin: 0 0 18px;
+  color: #5d6b7c;
+  line-height: 1.7;
+}
+
+.admin-loading-card a,
+.admin-help-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--admin-blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.admin-help-link {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 99999;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.24);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit !important;
+}
+
+button {
+  border-radius: 8px !important;
+}
+
+input,
+select,
+textarea {
+  border-radius: 8px !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline-color: var(--admin-blue) !important;
+}
+
+[class*="Sidebar"],
+[class*="AppHeader"] {
+  border-color: var(--admin-border) !important;
+}
+
+[class*="Button"] {
+  letter-spacing: 0 !important;
+}
+
+[class*="EditorContainer"],
+[class*="ControlContainer"],
+[class*="ListControl"] {
+  border-radius: 10px !important;
+}
+
+@media (max-width: 720px) {
+  .admin-loading-card {
+    padding: 24px;
+  }
+
+  .admin-help-link {
+    right: 12px;
+    bottom: 12px;
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: 0.9rem;
+  }
+}
