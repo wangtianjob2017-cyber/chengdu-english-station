@@ -366,6 +366,7 @@ function sanitizeMarkdownUrl(url) {
 function renderInlineMarkdown(value) {
   let html = escapeHTML(value);
 
+  html = html.replace(/^ +/, (spaces) => spaces.replace(/ {2}/g, "&emsp;").replace(/ /g, "&nbsp;"));
   html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/__([^_]+)__/g, "<strong>$1</strong>");
@@ -376,6 +377,10 @@ function renderInlineMarkdown(value) {
   });
 
   return html;
+}
+
+function normalizeMarkdownLine(line) {
+  return String(line).replace(/^\\(?=\s)/, "");
 }
 
 function renderMarkdownArticle(markdown) {
@@ -406,7 +411,8 @@ function renderMarkdownArticle(markdown) {
   }
 
   lines.forEach((line) => {
-    const trimmed = line.trim();
+    const normalizedLine = normalizeMarkdownLine(line);
+    const trimmed = normalizedLine.trim();
 
     if (!trimmed) {
       flushParagraph();
@@ -462,7 +468,7 @@ function renderMarkdownArticle(markdown) {
     }
 
     flushList();
-    paragraph.push(trimmed);
+    paragraph.push(normalizedLine.trimEnd());
   });
 
   flushParagraph();
