@@ -274,6 +274,19 @@ img {
   font-size: 1.08rem;
 }
 
+.article-detail-page {
+  width: min(100% - 32px, 1360px);
+}
+
+.article-detail-hero .page-hero-inner {
+  width: min(100% - 32px, 1360px);
+}
+
+.article-detail-hero h1,
+.article-detail-hero .page-description {
+  max-width: none;
+}
+
 .page-content {
   padding: 56px 0 76px;
 }
@@ -1024,13 +1037,18 @@ img {
 }
 
 .article-body {
-  max-width: 840px;
+  width: 100%;
+  max-width: none;
   padding: 34px;
-  margin: 0 auto;
+  margin: 0;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-white);
   box-shadow: var(--shadow-soft);
+}
+
+.article-detail-layout {
+  width: 100%;
 }
 
 .article-detail-meta {
