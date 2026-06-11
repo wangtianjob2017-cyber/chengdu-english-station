@@ -353,18 +353,44 @@ function escapeHTML(value) {
     .replaceAll("'", "&#039;");
 }
 
+function sanitizeMarkdownUrl(url) {
+  const trimmed = String(url || "").trim();
+
+  if (/^(https?:\/\/|mailto:|#|\.{0,2}\/|[A-Za-z0-9_-]+[A-Za-z0-9_./#?=&%-]*$)/.test(trimmed)) {
+    return escapeHTML(trimmed);
+  }
+
+  return "#";
+}
+
+function renderInlineMarkdown(value) {
+  let html = escapeHTML(value);
+
+  html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+  html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/__([^_]+)__/g, "<strong>$1</strong>");
+  html = html.replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>");
+  html = html.replace(/(^|[^_])_([^_]+)_/g, "$1<em>$2</em>");
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+    return `<a href="${sanitizeMarkdownUrl(url)}" target="_blank" rel="noopener">${text}</a>`;
+  });
+
+  return html;
+}
+
 function renderMarkdownArticle(markdown) {
   const lines = String(markdown || "").split(/\r?\n/);
   const blocks = [];
   let paragraph = [];
   let listItems = [];
+  let listType = "";
 
   function flushParagraph() {
     if (!paragraph.length) {
       return;
     }
 
-    blocks.push(`<p>${escapeHTML(paragraph.join(" ").trim())}</p>`);
+    blocks.push(`<p>${renderInlineMarkdown(paragraph.join(" ").trim())}</p>`);
     paragraph = [];
   }
 
@@ -373,8 +399,10 @@ function renderMarkdownArticle(markdown) {
       return;
     }
 
-    blocks.push(`<ul>${listItems.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>`);
+    const tag = listType === "ol" ? "ol" : "ul";
+    blocks.push(`<${tag}>${listItems.map((item) => `<li>${renderInlineMarkdown(item)}</li>`).join("")}</${tag}>`);
     listItems = [];
+    listType = "";
   }
 
   lines.forEach((line) => {
@@ -386,21 +414,50 @@ function renderMarkdownArticle(markdown) {
       return;
     }
 
-    const headingMatch = trimmed.match(/^(#{2,3})\s+(.+)$/);
+    const headingMatch = trimmed.match(/^(#{1,4})\s+(.+)$/);
 
     if (headingMatch) {
       flushParagraph();
       flushList();
-      const level = headingMatch[1].length;
-      blocks.push(`<h${level}>${escapeHTML(headingMatch[2])}</h${level}>`);
+      const level = Math.min(Math.max(headingMatch[1].length, 2), 3);
+      blocks.push(`<h${level}>${renderInlineMarkdown(headingMatch[2])}</h${level}>`);
       return;
     }
 
-    const listMatch = trimmed.match(/^[-*]\s+(.+)$/);
+    const blockquoteMatch = trimmed.match(/^>\s+(.+)$/);
 
-    if (listMatch) {
+    if (blockquoteMatch) {
       flushParagraph();
-      listItems.push(listMatch[1]);
+      flushList();
+      blocks.push(`<blockquote><p>${renderInlineMarkdown(blockquoteMatch[1])}</p></blockquote>`);
+      return;
+    }
+
+    const unorderedListMatch = trimmed.match(/^[-*+]\s+(.+)$/);
+
+    if (unorderedListMatch) {
+      flushParagraph();
+
+      if (listType && listType !== "ul") {
+        flushList();
+      }
+
+      listType = "ul";
+      listItems.push(unorderedListMatch[1]);
+      return;
+    }
+
+    const orderedListMatch = trimmed.match(/^\d+\.\s+(.+)$/);
+
+    if (orderedListMatch) {
+      flushParagraph();
+
+      if (listType && listType !== "ol") {
+        flushList();
+      }
+
+      listType = "ol";
+      listItems.push(orderedListMatch[1]);
       return;
     }
 
