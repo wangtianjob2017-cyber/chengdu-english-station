@@ -5916,7 +5916,7 @@ window.STATIC_DATA_FALLBACK = {
   ],
   "siteConfig": {
     "siteName": "成都中考英语加油站",
-    "siteSubtitle": "为成都初中生和家长整理清晰、实用、可打印的英语学习资料。少走弯路，精准提分。",
+    "siteSubtitle": "为成都初中生和家长整理清晰、实用、可打印的英语学习资料。少走弯路，复习更有方向。",
     "contactText": "邮箱：待补充；微信：待补充",
     "copyrightText": "© 2026 成都中考英语加油站。保留所有权利。",
     "navItems": [
@@ -5996,7 +5996,7 @@ window.STATIC_DATA_FALLBACK = {
         "id": "hero",
         "type": "hero",
         "title": "成都中考英语加油站",
-        "subtitle": "为成都初中生和家长整理清晰、实用、可打印的英语学习资料。少走弯路，精准提分。",
+        "subtitle": "为成都初中生和家长整理清晰、实用、可打印的英语学习资料。少走弯路，复习更有方向。",
         "enabled": true,
         "order": 1,
         "limit": 0,
