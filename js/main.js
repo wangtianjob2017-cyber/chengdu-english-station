@@ -195,10 +195,11 @@ async function fetchJsonData(endpoint) {
 
 async function loadConfiguredData() {
   const endpoints = window.DATA_ENDPOINTS || {};
+  const markdownArticlesEndpoint = endpoints.markdownArticles || "data/markdown-articles.json";
   const [resourcesData, articlesData, markdownArticlesData, siteConfigData] = await Promise.all([
     fetchJsonData(endpoints.resources),
     fetchJsonData(endpoints.articles),
-    fetchJsonData(endpoints.markdownArticles),
+    fetchJsonData(markdownArticlesEndpoint),
     fetchJsonData(endpoints.siteConfig),
   ]);
 

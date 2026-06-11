@@ -94,11 +94,11 @@ collections:
               - { name: vocabCategory, label: 词汇中心分类, widget: select, required: false, options: ["", "同步词汇", "中考高频词", "易错易混词", "词汇训练"], hint: "只有资料分类=词汇中心时填写。用于词汇中心页面筛选，例如 同步词汇、词汇训练。" }
 
   - name: articles_data
-    label: ② 备考文章管理
-    description: "新增、修改、隐藏备考文章，设置首页推荐文章，并关联相关资料题型。"
+    label: ② JSON 文章库管理
+    description: "管理 data/articles.json 中的结构化文章。用 Markdown 写的新长文章，请到“④ Markdown 文章发布”中查看和编辑；前台文章页会同时显示两类文章。"
     files:
       - name: articles
-        label: 文章库（方法、规划、家长指导）
+        label: JSON 文章库（方法、规划、家长指导）
         file: data/articles.json
         format: json
         fields:
@@ -109,7 +109,7 @@ collections:
             summary: "{{fields.category}}｜{{fields.title}}"
             collapsed: true
             minimize_collapsed: true
-            hint: "新增文章后，status 选 published 才会在前台显示；featured 打开后可进入首页文章区。"
+            hint: "这里显示的是 data/articles.json 里的文章，不包含“④ Markdown 文章发布”中的文章。新增文章后，status 选 published 才会在前台显示。"
             fields:
               - { name: id, label: 唯一 ID（文章编号）*, widget: string, hint: "这是文章的系统编号，不显示给用户。必须唯一。只能用英文小写、数字和短横线。例：article-reading-main-idea、article-vocab-forget。不要用中文、空格或重复 ID。" }
               - { name: title, label: 文章标题, widget: string }

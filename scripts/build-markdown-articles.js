@@ -38,10 +38,28 @@ function parseFrontmatter(markdown) {
   const body = markdown.slice(endIndex + 4).trim();
   const data = {};
   let activeListKey = "";
+  let activeBlockKey = "";
+  let activeBlockMode = "";
 
   frontmatter.forEach((line) => {
     if (!line.trim()) {
+      if (activeBlockKey) {
+        data[activeBlockKey].push("");
+      }
       return;
+    }
+
+    const keyMatch = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+
+    if (activeBlockKey && !keyMatch && /^\s+/.test(line)) {
+      data[activeBlockKey].push(line.trim());
+      return;
+    }
+
+    if (activeBlockKey) {
+      data[activeBlockKey] = activeBlockMode === "literal" ? data[activeBlockKey].join("\n").trim() : data[activeBlockKey].join(" ").trim();
+      activeBlockKey = "";
+      activeBlockMode = "";
     }
 
     const listMatch = line.match(/^\s*-\s+(.*)$/);
@@ -51,14 +69,19 @@ function parseFrontmatter(markdown) {
       return;
     }
 
-    const keyMatch = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-
     if (!keyMatch) {
       return;
     }
 
     const [, key, value] = keyMatch;
     activeListKey = "";
+
+    if (value === ">" || value === "|") {
+      data[key] = [];
+      activeBlockKey = key;
+      activeBlockMode = value === "|" ? "literal" : "folded";
+      return;
+    }
 
     if (value === "") {
       data[key] = [];
@@ -69,7 +92,30 @@ function parseFrontmatter(markdown) {
     data[key] = parseScalar(value);
   });
 
+  if (activeBlockKey) {
+    data[activeBlockKey] = activeBlockMode === "literal" ? data[activeBlockKey].join("\n").trim() : data[activeBlockKey].join(" ").trim();
+  }
+
   return { data, body };
+}
+
+function removeLeadingTitleHeading(body, title) {
+  const lines = body.split(/\r?\n/);
+  const firstContentIndex = lines.findIndex((line) => line.trim());
+
+  if (firstContentIndex === -1) {
+    return body;
+  }
+
+  const firstLine = lines[firstContentIndex].trim();
+  const headingMatch = firstLine.match(/^#\s+(.+)$/);
+
+  if (!headingMatch || headingMatch[1].trim() !== title) {
+    return body;
+  }
+
+  lines.splice(firstContentIndex, 1);
+  return lines.join("\n").trim();
 }
 
 function markdownToContentSections(body) {
@@ -96,7 +142,7 @@ function markdownToContentSections(body) {
   }
 
   lines.forEach((line) => {
-    const headingMatch = line.match(/^##\s+(.+)$/);
+    const headingMatch = line.match(/^#{1,3}\s+(.+)$/);
 
     if (headingMatch) {
       flushSection();
@@ -122,10 +168,12 @@ function buildArticle(filePath) {
   const { data, body } = parseFrontmatter(markdown);
   const fallbackId = path.basename(filePath, ".md");
   const id = data.id || fallbackId;
+  const title = data.title || id;
+  const cleanedBody = removeLeadingTitleHeading(body, title);
 
   return {
     id,
-    title: data.title || id,
+    title,
     category: data.category || "备考文章",
     target: data.target || "初中学生和家长",
     description: data.description || "",
@@ -136,8 +184,8 @@ function buildArticle(filePath) {
     date: data.date || data.updatedAt || "",
     updatedAt: data.updatedAt || data.date || "",
     relatedResourceTypes: Array.isArray(data.relatedResourceTypes) ? data.relatedResourceTypes : [],
-    content: markdownToContentSections(body),
-    contentMarkdown: body,
+    content: markdownToContentSections(cleanedBody),
+    contentMarkdown: cleanedBody,
     source: "markdown",
   };
 }
