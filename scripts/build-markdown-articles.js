@@ -179,6 +179,7 @@ function buildArticle(filePath) {
     description: data.description || "",
     url: `article-detail.html?id=${encodeURIComponent(id)}`,
     featured: Boolean(data.featured),
+    pinned: Boolean(data.pinned),
     status: data.status || "draft",
     tags: Array.isArray(data.tags) ? data.tags : [],
     date: data.date || data.updatedAt || "",

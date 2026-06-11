@@ -8,6 +8,7 @@
       "description": "很多家长看孩子的英语试卷，第一反应往往是：“不就是听力、阅读、作文吗？”但真正研究成都中考英语就会发现，A卷和B卷的分工非常清楚：A卷看孩子的基础是否扎实、理解是否快速；B卷看孩子能不能把词汇、语法、阅读和表达综合运用起来。也就是说，英语成绩并不是靠最后背几篇作文、刷几套题就能稳定提高的，它考的是长期积累出来的语言能力。",
       "url": "article-detail.html?id=article-tixing",
       "featured": true,
+      "pinned": true,
       "status": "published",
       "tags": [
         "题型",
@@ -70,6 +71,7 @@
       "description": "这是一篇 Markdown 文章示例，用来说明后台长文章发布入口的写法。",
       "url": "article-detail.html?id=example-markdown-article",
       "featured": false,
+      "pinned": false,
       "status": "draft",
       "tags": [
         "成都中考英语",

@@ -177,6 +177,7 @@ content
 faq
 relatedResourceTypes
 featured
+pinned
 ```
 
 简单理解：
@@ -191,6 +192,7 @@ featured
 - `faq`：常见问答。
 - `relatedResourceTypes`：关联的资料题型，建议使用 `data/site-config.json` 中 `topicGroups` 的题型名称。
 - `featured`：是否作为推荐文章，填写 `true` 或 `false`。
+- `pinned`：是否在备考文章页置顶，填写 `true` 或 `false`。适合重点展示的高质量文章。
 
 ## 如何替换 PDF 下载文件
 

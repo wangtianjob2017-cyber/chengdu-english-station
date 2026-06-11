@@ -979,12 +979,18 @@ function renderResourceDetail() {
 function createArticleCard(article) {
   const articleDate = article.date || article.updatedAt || "";
   const articleUrl = article.url || `article-detail.html?id=${encodeURIComponent(article.id)}`;
+  const pinnedBadge = article.pinned ? `<span class="article-pin-badge">置顶推荐</span>` : "";
+  const featuredBadge = article.featured && !article.pinned ? `<span class="article-featured-badge">重点文章</span>` : "";
 
   return `
-    <article class="article-card">
+    <article class="article-card${article.pinned ? " is-pinned" : ""}">
       <div class="article-meta">
         <span>${escapeHTML(article.category)}</span>
         <time datetime="${escapeHTML(articleDate)}">${escapeHTML(articleDate)}</time>
+      </div>
+      <div class="article-badges">
+        ${pinnedBadge}
+        ${featuredBadge}
       </div>
       <h3>${escapeHTML(article.title)}</h3>
       <p class="article-target">适合人群：${escapeHTML(article.target)}</p>
@@ -992,6 +998,26 @@ function createArticleCard(article) {
       <a class="btn btn-primary" href="${escapeHTML(articleUrl)}">阅读文章</a>
     </article>
   `;
+}
+
+function getArticleSortTime(article) {
+  const value = article.updatedAt || article.date || "";
+  const time = Date.parse(value);
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function getSortedArticles(articles) {
+  return [...articles].sort((a, b) => {
+    if (Boolean(a.pinned) !== Boolean(b.pinned)) {
+      return a.pinned ? -1 : 1;
+    }
+
+    if (Boolean(a.featured) !== Boolean(b.featured)) {
+      return a.featured ? -1 : 1;
+    }
+
+    return getArticleSortTime(b) - getArticleSortTime(a);
+  });
 }
 
 function initArticleCategoryFilter() {
@@ -1027,7 +1053,7 @@ function renderArticleList() {
     return matchesKeyword && matchesCategory;
   });
 
-  articleListContainer.innerHTML = filteredArticles.map(createArticleCard).join("");
+  articleListContainer.innerHTML = getSortedArticles(filteredArticles).map(createArticleCard).join("");
 
   if (articleCount) {
     articleCount.textContent = `共 ${filteredArticles.length} 篇文章`;
@@ -1039,7 +1065,7 @@ function renderHomeArticles() {
     return;
   }
 
-  homeArticlesContainer.innerHTML = appArticles.slice(0, 3).map(createArticleCard).join("");
+  homeArticlesContainer.innerHTML = getSortedArticles(appArticles).slice(0, 3).map(createArticleCard).join("");
 }
 
 function getArticleDetailId() {
@@ -1143,6 +1169,10 @@ function renderArticleDetail() {
   const metaDescription = document.querySelector("meta[name='description']");
   const relatedResources = getArticleRelatedResources(article);
   const articleDate = article.date || article.updatedAt || "";
+  const articleBadges = [
+    article.pinned ? `<span class="article-pin-badge">置顶推荐</span>` : "",
+    article.featured && !article.pinned ? `<span class="article-featured-badge">重点文章</span>` : "",
+  ].join("");
 
   document.title = `${article.title} - 成都中考英语加油站`;
 
@@ -1165,6 +1195,7 @@ function renderArticleDetail() {
           <span>${escapeHTML(article.category)}</span>
           <time datetime="${escapeHTML(articleDate)}">${escapeHTML(articleDate)}</time>
         </div>
+        <div class="article-badges article-detail-badges">${articleBadges}</div>
         <p class="article-target">适合人群：${escapeHTML(article.target)}</p>
         ${renderArticleBody(article)}
         ${renderArticleFaq(article)}

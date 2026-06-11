@@ -117,6 +117,7 @@ collections:
               - { name: target, label: 适合人群, widget: text, required: false, hint: "例如：九年级学生家长、阅读理解失分较多的学生。" }
               - { name: description, label: 文章摘要, widget: text, hint: "显示在文章卡片中，建议 1-2 句话。" }
               - { name: url, label: 文章详情链接, widget: string, required: false, hint: "格式固定：article-detail.html?id=唯一ID。例如 ID 是 article-reading-main-idea，这里填 article-detail.html?id=article-reading-main-idea。" }
+              - { name: pinned, label: 是否文章页置顶, widget: boolean, default: false, required: false, hint: "打开后会在备考文章页优先显示，并出现“置顶推荐”标识。适合长期重点展示的高质量文章。" }
               - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "打开后可能显示在首页“家长备考文章”。首页通常只展示前 3 篇推荐文章。" }
               - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "published", hint: "published=正式发布，前台能看到；draft=草稿/隐藏，前台不显示。没写完的文章建议先 draft。" }
               - name: tags
@@ -242,6 +243,7 @@ collections:
       - { name: category, label: 文章分类, widget: select, options: ["题型方法", "词汇学习", "分数提升", "分数段提升", "家长指导", "家长陪伴", "备考规划", "中考规划", "七年级基础", "八年级提升", "九年级冲刺", "阅读理解", "完形填空", "作文提升"], hint: "用于前台文章筛选。" }
       - { name: target, label: 适合人群, widget: text, required: false }
       - { name: description, label: 文章摘要, widget: text, hint: "建议 1-2 句话，后续可显示在文章卡片和 SEO 描述中。" }
+      - { name: pinned, label: 是否文章页置顶, widget: boolean, default: false, required: false, hint: "打开后会在备考文章页优先显示，并出现“置顶推荐”标识。适合长期重点展示的高质量文章。" }
       - { name: featured, label: 是否首页推荐文章, widget: boolean, default: false, required: false, hint: "打开后可参与首页文章推荐。首页只展示少量文章，不一定每篇推荐文章都会露出。" }
       - { name: status, label: 发布状态, widget: select, options: ["published", "draft"], default: "draft", hint: "published=发布到前台；draft=草稿/隐藏。发布后通常需要等待 GitHub Action 和 Cloudflare Pages 完成自动更新。" }
       - name: tags
