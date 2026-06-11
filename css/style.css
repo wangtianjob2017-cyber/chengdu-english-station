@@ -52,7 +52,7 @@ img {
 .navbar {
   display: grid;
   align-items: center;
-  justify-items: center;
+  justify-items: start;
   grid-template-columns: 1fr;
   width: min(100% - 32px, var(--max-width));
   margin: 0 auto;
@@ -63,10 +63,10 @@ img {
 .logo {
   flex-shrink: 0;
   display: inline-flex;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
   color: var(--color-blue-dark);
-  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-size: clamp(1.7rem, 3.4vw, 2.35rem);
   font-weight: 900;
   line-height: 1.15;
   letter-spacing: 0;
@@ -75,8 +75,9 @@ img {
 .nav-menu {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  width: 100%;
   gap: 6px;
   padding: 0;
   margin: 0;
@@ -159,7 +160,7 @@ img {
 .hero-content {
   width: min(100% - 32px, var(--max-width));
   margin: 0 auto;
-  padding: 92px 0 104px;
+  padding: 82px 0 96px;
   text-align: center;
 }
 
@@ -172,12 +173,13 @@ img {
 }
 
 .hero h1 {
-  max-width: 1080px;
+  max-width: none;
   margin: 0 auto;
   color: var(--color-blue-dark);
-  font-size: clamp(2.2rem, 5.2vw, 4.2rem);
+  font-size: clamp(1.85rem, 3.35vw, 3.25rem);
   line-height: 1.08;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .hero-subtitle {
@@ -1573,6 +1575,8 @@ img {
   .logo {
     grid-column: 2;
     max-width: 100%;
+    justify-content: center;
+    text-align: center;
     font-size: clamp(1.12rem, 5.4vw, 1.42rem);
   }
 
@@ -2014,7 +2018,7 @@ img {
 @media (min-width: 861px) {
   .nav-menu {
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
   }
 }
 
@@ -2036,6 +2040,8 @@ img {
   .logo {
     grid-column: 2;
     max-width: 100%;
+    justify-content: center;
+    text-align: center;
     line-height: 1.25;
   }
 
@@ -2066,6 +2072,7 @@ img {
   .hero h1 {
     font-size: clamp(2.15rem, 10vw, 3.2rem);
     line-height: 1.12;
+    white-space: normal;
   }
 
   .hero-subtitle,
