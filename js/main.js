@@ -894,6 +894,10 @@ function renderResourceDetail() {
 
   const relatedResources = getRelatedResources(resource);
   const metaDescription = document.querySelector("meta[name='description']");
+  const resourceContents = Array.isArray(resource.contents) && resource.contents.length
+    ? resource.contents
+    : ["资料内容正在整理中，后续会持续补充。"];
+  const resourceUsage = resource.usage || "建议先通读资料说明，再按题目顺序完成练习，最后结合错题进行复盘。";
 
   document.title = `${resource.title} - 成都中考英语加油站`;
 
@@ -930,13 +934,13 @@ function renderResourceDetail() {
 
         <section aria-labelledby="detail-usage-title">
           <h2 id="detail-usage-title">使用方法</h2>
-          <p>${escapeHTML(resource.usage)}</p>
+          <p>${escapeHTML(resourceUsage)}</p>
         </section>
 
         <section aria-labelledby="detail-contents-title">
           <h2 id="detail-contents-title">包含内容列表</h2>
           <ul class="content-list">
-            ${resource.contents.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}
+            ${resourceContents.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}
           </ul>
         </section>
       </article>
@@ -948,6 +952,15 @@ function renderResourceDetail() {
           <a class="btn btn-primary download-link" href="${escapeHTML(resource.file)}" data-file="${escapeHTML(resource.file)}">
             下载资料
           </a>
+        </div>
+
+        <div class="detail-side-card detail-step-card">
+          <h2>建议使用顺序</h2>
+          <ol class="detail-step-list">
+            <li>先看适合对象，确认是否符合孩子当前阶段。</li>
+            <li>按资料要求限时完成，不建议边看答案边做。</li>
+            <li>完成后标出错题原因，再决定是否进入下一份资料。</li>
+          </ol>
         </div>
 
         <div class="copyright-note">
@@ -1137,6 +1150,57 @@ function renderArticleBody(article) {
   return `<p>${escapeHTML(article.description || "这篇文章内容正在整理中。")}</p>`;
 }
 
+function stripHTMLText(html) {
+  return String(html || "")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;|&emsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .trim();
+}
+
+function buildArticleBodyWithToc(bodyHtml) {
+  const tocItems = [];
+  let headingIndex = 0;
+  const html = String(bodyHtml || "").replace(/<h([23])>(.*?)<\/h\1>/g, (match, level, headingHtml) => {
+    headingIndex += 1;
+    const id = `article-section-${headingIndex}`;
+    const text = stripHTMLText(headingHtml);
+
+    if (text) {
+      tocItems.push({ id, level, text });
+    }
+
+    return `<h${level} id="${id}">${headingHtml}</h${level}>`;
+  });
+
+  if (tocItems.length < 2) {
+    return { html, toc: "" };
+  }
+
+  const toc = `
+    <nav class="article-toc" aria-label="文章目录">
+      <h2>本文目录</h2>
+      <ol>
+        ${tocItems
+          .map(
+            (item) => `
+              <li class="toc-level-${escapeHTML(item.level)}">
+                <a href="#${escapeHTML(item.id)}">${escapeHTML(item.text)}</a>
+              </li>
+            `
+          )
+          .join("")}
+      </ol>
+    </nav>
+  `;
+
+  return { html, toc };
+}
+
 function renderArticleFaq(article) {
   if (!Array.isArray(article.faq) || !article.faq.length) {
     return "";
@@ -1179,6 +1243,7 @@ function renderArticleDetail() {
     article.pinned ? `<span class="article-pin-badge">置顶推荐</span>` : "",
     article.featured && !article.pinned ? `<span class="article-featured-badge">重点文章</span>` : "",
   ].join("");
+  const articleBody = buildArticleBodyWithToc(renderArticleBody(article));
 
   document.title = `${article.title} - 成都中考英语加油站`;
 
@@ -1203,7 +1268,8 @@ function renderArticleDetail() {
         </div>
         <div class="article-badges article-detail-badges">${articleBadges}</div>
         <p class="article-target">适合人群：${escapeHTML(article.target)}</p>
-        ${renderArticleBody(article)}
+        ${articleBody.toc}
+        ${articleBody.html}
         ${renderArticleFaq(article)}
       </div>
     </article>
