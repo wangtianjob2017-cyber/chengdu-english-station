@@ -93,7 +93,7 @@ img {
   justify-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
-  gap: 6px;
+  gap: 8px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -103,17 +103,24 @@ img {
   display: inline-flex;
   align-items: center;
   min-height: 40px;
-  padding: 0 12px;
+  padding: 0 13px;
   border-radius: 6px;
-  color: #334155;
-  font-size: 0.95rem;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  color: #475569;
+  font-size: clamp(0.98rem, 1.45vw, 1.1rem);
+  font-weight: 700;
+  line-height: 1.55;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.nav-menu a:hover,
-.nav-menu a[aria-current="page"] {
+.nav-menu a:hover {
   color: var(--color-blue-dark);
-  background: var(--color-blue-soft);
+  background: rgba(234, 243, 255, 0.88);
+}
+
+.nav-menu a[aria-current="page"] {
+  color: var(--color-white);
+  background: var(--color-blue);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
 }
 
 .nav-dropdown {
@@ -347,6 +354,11 @@ img {
     #ffffff;
 }
 
+.page-hero-compact {
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+}
+
 .page-hero-inner,
 .page-content {
   width: min(100% - 32px, var(--max-width));
@@ -355,6 +367,23 @@ img {
 
 .page-hero-inner {
   padding: 64px 0 58px;
+}
+
+.page-hero-compact .page-hero-inner {
+  padding: 22px 0 20px;
+}
+
+.page-hero-compact .section-kicker,
+.page-hero-compact h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .page-hero h1 {
@@ -371,6 +400,47 @@ img {
   margin: 18px 0 0;
   color: #334155;
   font-size: 1.08rem;
+}
+
+.page-hero-compact .page-description {
+  max-width: 960px;
+  margin: 0;
+  color: #475569;
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.page-back-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.page-hero-compact .page-back-actions {
+  margin-top: 12px;
+}
+
+.page-back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(30, 58, 138, 0.16);
+  border-radius: 6px;
+  color: var(--color-blue-dark);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.page-back-link:hover {
+  border-color: rgba(37, 99, 235, 0.32);
+  background: var(--color-white);
 }
 
 .article-detail-page {
@@ -1624,6 +1694,7 @@ img {
   .nav-menu a {
     min-height: 44px;
     padding: 0 10px;
+    font-size: 1rem;
   }
 
   .nav-dropdown {

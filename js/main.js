@@ -294,6 +294,34 @@ function renderFooterLinksFromConfig() {
   });
 }
 
+function initPageBackLinks() {
+  const currentPage = getCurrentPageName();
+  const heroInner = document.querySelector(".page-hero-inner");
+
+  if (!heroInner || currentPage === "index.html" || heroInner.querySelector(".page-back-actions")) {
+    return;
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "page-back-actions";
+  actions.innerHTML = `
+    <button class="page-back-link" type="button">返回上一页</button>
+    <a class="page-back-link" href="index.html">返回首页</a>
+  `;
+
+  const backButton = actions.querySelector("button");
+  backButton.addEventListener("click", () => {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    window.location.href = "index.html";
+  });
+
+  heroInner.appendChild(actions);
+}
+
 function applyHomeSectionConfig() {
   if (!Array.isArray(appSiteConfig.homeSections)) {
     return;
@@ -1463,6 +1491,7 @@ async function initApp() {
   await loadConfiguredData();
   renderNavigationFromConfig();
   renderFooterLinksFromConfig();
+  initPageBackLinks();
   applyHomeSectionConfig();
   renderFeaturedResources();
   renderHomeArticles();
