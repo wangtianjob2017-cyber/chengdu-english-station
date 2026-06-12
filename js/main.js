@@ -238,23 +238,26 @@ function renderNavigationFromConfig() {
   }
 
   const currentPage = getCurrentPageName();
+  const resourceCenterPages = new Set(["resources.html", "resource-detail.html", "grade-7.html", "grade-8.html", "grade-9.html", "topics.html"]);
   const items = appSiteConfig.navItems
     .filter((item) => item.enabled)
     .sort((a, b) => a.order - b.order);
 
   navMenu.innerHTML = items
     .map((item) => {
-      const isCurrent = item.url === currentPage || (item.label === "按年级" && currentPage.startsWith("grade-"));
+      const children = Array.isArray(item.children)
+        ? item.children.filter((child) => child.enabled).sort((a, b) => a.order - b.order)
+        : [];
+      const isResourceCenter = item.label === "资料中心" && resourceCenterPages.has(currentPage);
+      const isCurrent = item.url === currentPage || isResourceCenter;
       const currentAttr = isCurrent ? ' aria-current="page"' : "";
 
-      if (item.label === "按年级") {
+      if (children.length) {
         return `
           <li class="nav-dropdown">
             <a class="nav-dropdown-link" href="${escapeHTML(item.url)}"${currentAttr}>${escapeHTML(item.label)}</a>
-            <div class="nav-submenu" aria-label="按年级子导航">
-              <a href="grade-7.html">七年级</a>
-              <a href="grade-8.html">八年级</a>
-              <a href="grade-9.html">九年级</a>
+            <div class="nav-submenu" aria-label="${escapeHTML(item.label)}子导航">
+              ${children.map((child) => `<a href="${escapeHTML(child.url)}">${escapeHTML(child.label)}</a>`).join("")}
             </div>
           </li>
         `;

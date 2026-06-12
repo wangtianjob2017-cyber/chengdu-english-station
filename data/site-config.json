@@ -11,46 +11,54 @@
       "order": 1
     },
     {
-      "label": "免费资料",
-      "url": "resources.html",
+      "label": "词汇中心",
+      "url": "vocabulary.html",
       "enabled": true,
       "order": 2
     },
     {
-      "label": "词汇中心",
-      "url": "vocabulary.html",
+      "label": "资料中心",
+      "url": "resources.html",
       "enabled": true,
-      "order": 3
-    },
-    {
-      "label": "按年级",
-      "url": "grade-7.html",
-      "enabled": true,
-      "order": 4
-    },
-    {
-      "label": "按题型",
-      "url": "topics.html",
-      "enabled": true,
-      "order": 5
+      "order": 3,
+      "children": [
+        {
+          "label": "免费资料",
+          "url": "resources.html",
+          "enabled": true,
+          "order": 1
+        },
+        {
+          "label": "按年级",
+          "url": "grade-7.html",
+          "enabled": true,
+          "order": 2
+        },
+        {
+          "label": "按题型",
+          "url": "topics.html",
+          "enabled": true,
+          "order": 3
+        }
+      ]
     },
     {
       "label": "备考文章",
       "url": "articles.html",
       "enabled": true,
-      "order": 6
+      "order": 4
     },
     {
       "label": "学习诊断",
       "url": "diagnosis.html",
       "enabled": true,
-      "order": 7
+      "order": 5
     },
     {
       "label": "关于本站",
       "url": "about.html",
       "enabled": true,
-      "order": 8
+      "order": 6
     }
   ],
   "footerLinks": [

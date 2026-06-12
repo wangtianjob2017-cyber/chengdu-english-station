@@ -182,6 +182,18 @@ collections:
               - { name: url, label: 链接, widget: string }
               - { name: enabled, label: 显示, widget: boolean, default: true }
               - { name: order, label: 排序, widget: number, value_type: int, min: 1 }
+              - name: children
+                label: 子菜单
+                widget: list
+                required: false
+                collapsed: true
+                summary: "{{fields.order}} - {{fields.label}}"
+                hint: "例如资料中心下的 免费资料、按年级、按题型。普通导航项可以留空。"
+                fields:
+                  - { name: label, label: 子菜单名称, widget: string }
+                  - { name: url, label: 子菜单链接, widget: string }
+                  - { name: enabled, label: 显示, widget: boolean, default: true }
+                  - { name: order, label: 排序, widget: number, value_type: int, min: 1 }
           - name: footerLinks
             label: 页脚链接
             widget: list
