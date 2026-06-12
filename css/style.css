@@ -45,7 +45,9 @@ img {
   top: 0;
   z-index: 10;
   border-bottom: 1px solid rgba(219, 229, 241, 0.85);
-  background: rgba(255, 255, 255, 0.95);
+  background:
+    linear-gradient(135deg, rgba(234, 243, 255, 0.97), rgba(255, 243, 196, 0.92)),
+    rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
 }
 
@@ -60,6 +62,11 @@ img {
   padding: 14px 0 12px;
 }
 
+.site-brand {
+  display: grid;
+  gap: 6px;
+}
+
 .logo {
   flex-shrink: 0;
   display: inline-flex;
@@ -70,6 +77,14 @@ img {
   font-weight: 900;
   line-height: 1.15;
   letter-spacing: 0;
+}
+
+.site-tagline {
+  max-width: 880px;
+  margin: 0;
+  color: #475569;
+  font-size: clamp(0.98rem, 1.55vw, 1.12rem);
+  line-height: 1.55;
 }
 
 .nav-menu {
@@ -199,8 +214,8 @@ img {
 
 .home-priority {
   width: min(100% - 32px, var(--max-width));
-  margin: -30px auto 0;
-  padding: 0 0 56px;
+  margin: 0 auto;
+  padding: 46px 0 56px;
   position: relative;
   z-index: 1;
 }
@@ -634,6 +649,7 @@ img {
   gap: 20px;
 }
 
+.section-heading h1,
 .section-heading h2 {
   margin: 0;
   color: var(--color-blue-dark);
@@ -664,31 +680,40 @@ img {
 }
 
 .value-card {
-  min-height: 240px;
-  padding: 28px;
+  min-height: 176px;
+  padding: 24px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-white);
   box-shadow: var(--shadow-soft);
 }
 
+.value-card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
 .card-icon {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
-  margin-bottom: 18px;
+  width: 34px;
+  height: 34px;
   border-radius: 6px;
   color: var(--color-blue-dark);
-  font-weight: 800;
+  font-size: 1.05rem;
+  font-weight: 900;
   background: var(--color-yellow);
 }
 
 .value-card h3 {
-  margin: 0 0 10px;
+  margin: 0;
   color: var(--color-blue-dark);
   font-size: 1.25rem;
+  line-height: 1.25;
 }
 
 .value-card p {
@@ -1572,6 +1597,12 @@ img {
     justify-self: end;
   }
 
+  .site-brand {
+    grid-column: 2;
+    justify-items: center;
+    text-align: center;
+  }
+
   .nav-menu {
     position: absolute;
     top: 100%;
@@ -1701,7 +1732,8 @@ img {
   }
 
   .home-priority {
-    margin-top: -22px;
+    margin-top: 0;
+    padding-top: 36px;
     padding-bottom: 48px;
   }
 
@@ -1717,11 +1749,15 @@ img {
   }
 
   .logo {
-    grid-column: 2;
     max-width: 100%;
     justify-content: center;
     text-align: center;
     font-size: clamp(1.12rem, 5.4vw, 1.42rem);
+  }
+
+  .site-tagline {
+    font-size: 0.92rem;
+    line-height: 1.45;
   }
 
   .hero-actions {

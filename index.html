@@ -17,7 +17,10 @@
     <!-- 顶部导航：后续页面可复用这一块结构。 -->
     <header class="site-header">
       <nav class="navbar" aria-label="主导航">
-        <a class="logo" href="index.html">成都中考英语加油站</a>
+        <div class="site-brand">
+          <a class="logo" href="index.html">成都中考英语加油站</a>
+          <p class="site-tagline">清晰、实用、可打印的成都中考英语资料库，帮助成都初中生和家长更有方向地复习英语。</p>
+        </div>
         <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -40,20 +43,10 @@
     </header>
 
     <main>
-      <!-- 首页首屏：说明网站定位，具体入口放在下方问题卡片中。 -->
-      <section class="hero" data-home-section="hero">
-        <div class="hero-content">
-          <h1>清晰、实用、可打印的成都中考英语资料库</h1>
-          <p class="hero-subtitle">
-            为成都初中生和家长整理清晰、实用、可打印的英语学习资料。少走弯路，复习更有方向。
-          </p>
-        </div>
-      </section>
-
       <section class="home-priority" aria-labelledby="home-priority-title">
         <div class="section-heading">
           <p class="section-kicker">从这里开始</p>
-          <h2 id="home-priority-title">孩子现在卡在哪一步？</h2>
+          <h1 id="home-priority-title">孩子现在卡在哪一步？</h1>
           <p>不用先研究网站栏目，直接按孩子当前最明显的问题进入对应内容。</p>
         </div>
 
@@ -93,20 +86,26 @@
 
         <div class="value-grid">
           <article class="value-card">
-            <div class="card-icon" aria-hidden="true">师</div>
-            <h3>一线老师筛选</h3>
+            <div class="value-card-title">
+              <div class="card-icon" aria-hidden="true">师</div>
+              <h3>一线老师筛选</h3>
+            </div>
             <p>围绕成都中考英语常见考点与学生薄弱点，优先整理真正适合日常复习的资料。</p>
           </article>
 
           <article class="value-card">
-            <div class="card-icon" aria-hidden="true">类</div>
-            <h3>按年级和题型分类</h3>
+            <div class="value-card-title">
+              <div class="card-icon" aria-hidden="true">类</div>
+              <h3>按年级和题型分类</h3>
+            </div>
             <p>从七年级基础到中考冲刺，按年级、语法、阅读、写作等方向逐步查找。</p>
           </article>
 
           <article class="value-card">
-            <div class="card-icon" aria-hidden="true">划</div>
-            <h3>免费资料 + 学习规划</h3>
+            <div class="value-card-title">
+              <div class="card-icon" aria-hidden="true">划</div>
+              <h3>免费资料 + 学习规划</h3>
+            </div>
             <p>提供可打印资料，也帮助家长和学生了解下一步该补什么、怎么安排更有效。</p>
           </article>
         </div>
