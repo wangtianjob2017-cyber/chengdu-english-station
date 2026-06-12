@@ -3188,7 +3188,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-year-plan",
       "title": "成都中考英语怎么复习？一线老师给家长的全年规划",
-      "category": "中考规划",
+      "category": "备考规划",
       "target": "九年级学生家长，以及想提前了解中考节奏的初中家庭",
       "description": "把英语复习拆成基础回顾、题型突破、综合训练和考前整理四个阶段，让家长知道每个阶段该关注什么。",
       "date": "2026-06-08",
@@ -3244,7 +3244,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-grade7-foundation",
       "title": "初一英语怎么打基础？不要一开始就盲目刷题",
-      "category": "七年级基础",
+      "category": "备考规划",
       "target": "七年级学生家长，尤其是孩子刚进入初中英语学习节奏的家庭",
       "description": "初一英语重点不是难题数量，而是词汇、句型、朗读和基础阅读习惯。",
       "date": "2026-06-08",
@@ -3300,7 +3300,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-grade8-drop",
       "title": "初二英语为什么容易掉队？家长要重点关注这三件事",
-      "category": "八年级提升",
+      "category": "备考规划",
       "target": "八年级学生家长，尤其是发现孩子英语成绩开始波动的家庭",
       "description": "初二英语掉队常见原因是语法综合变多、阅读难度上升、学习习惯没有升级。",
       "date": "2026-06-08",
@@ -3356,7 +3356,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-grade9-first-round",
       "title": "初三英语一轮复习怎么做？先补漏洞再刷套卷",
-      "category": "九年级冲刺",
+      "category": "备考规划",
       "target": "九年级学生和家长，准备进入系统复习的家庭",
       "description": "一轮复习的重点是查漏补缺，不是用套卷掩盖基础问题。",
       "date": "2026-06-08",
@@ -3412,7 +3412,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-under-60",
       "title": "英语60分以下怎么补基础？",
-      "category": "分数段提升",
+      "category": "分数提升",
       "target": "英语基础薄弱、单词和基础句型失分较多的学生家长",
       "description": "60分以下先补最基础的词汇、句型和课本内容，不急着追求难题。",
       "date": "2026-06-08",
@@ -3468,7 +3468,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-80-to-100",
       "title": "英语80分怎么提高到100分？",
-      "category": "分数段提升",
+      "category": "分数提升",
       "target": "英语有基础但成绩不稳定、希望稳步提升的初中家庭",
       "description": "80分到100分的关键通常是语法漏洞、阅读方法和作文基本表达。",
       "date": "2026-06-08",
@@ -3524,7 +3524,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-writing-upgrade",
       "title": "中考英语作文怎么提分？从句子升级开始",
-      "category": "作文提升",
+      "category": "题型方法",
       "target": "作文句子单一、表达不够完整的初中生和家长",
       "description": "作文提升先从准确句子、清楚结构和话题素材开始，不靠夸张表达堆砌。",
       "date": "2026-06-08",
@@ -3576,7 +3576,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-reading-errors",
       "title": "初中英语阅读理解总错怎么办？",
-      "category": "阅读理解",
+      "category": "题型方法",
       "target": "阅读理解正确率不稳定、总觉得文章看懂但题做错的学生家长",
       "description": "阅读总错时，要区分词汇问题、定位问题、推断问题和审题问题。",
       "date": "2026-06-08",
@@ -3630,7 +3630,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-cloze-method",
       "title": "完形填空怎么练才有效？",
-      "category": "完形填空",
+      "category": "题型方法",
       "target": "完形填空经常凭感觉选、正确率波动大的初中生和家长",
       "description": "完形填空训练重点是通读全文、抓上下文线索、整理固定搭配和错因。",
       "date": "2026-06-08",
@@ -3684,7 +3684,7 @@ window.STATIC_DATA_FALLBACK = {
     {
       "id": "article-parent-support",
       "title": "家长怎么陪孩子学英语？不要只盯着分数",
-      "category": "家长陪伴",
+      "category": "家长指导",
       "target": "希望更有效陪伴孩子英语学习，但不想把亲子关系变紧张的家长",
       "description": "家长陪学的重点是帮助孩子建立记录、复盘和稳定执行，而不是每天追问分数。",
       "date": "2026-06-08",
