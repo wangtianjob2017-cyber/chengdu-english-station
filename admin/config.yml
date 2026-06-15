@@ -188,7 +188,7 @@ collections:
                 required: false
                 collapsed: true
                 summary: "{{fields.order}} - {{fields.label}}"
-                hint: "例如资料中心下的 免费资料、按年级、按题型。普通导航项可以留空。"
+                hint: "例如资料中心下的 免费资料、按年级、按题型、精品资料包。普通导航项可以留空。"
                 fields:
                   - { name: label, label: 子菜单名称, widget: string }
                   - { name: url, label: 子菜单链接, widget: string }
@@ -200,7 +200,7 @@ collections:
             required: false
             summary: "{{fields.label}}"
             collapsed: true
-            hint: "用于页脚补充入口，例如精品资料包、作文批改、合作说明。导航栏已有的首页、词汇中心、资料中心、备考文章、学习诊断、关于本站，不建议重复放到页脚。"
+            hint: "当前页脚保持极简，只保留版权、隐私政策和免责声明。不建议在这里新增入口；精品资料包放在资料中心子菜单，作文批改和合作说明放在顶部导航。"
             fields:
               - { name: label, label: 名称, widget: string }
               - { name: url, label: 链接, widget: string }

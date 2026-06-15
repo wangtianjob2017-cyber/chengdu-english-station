@@ -5955,6 +5955,12 @@ window.STATIC_DATA_FALLBACK = {
             "url": "topics.html",
             "enabled": true,
             "order": 3
+          },
+          {
+            "label": "精品资料包",
+            "url": "premium.html",
+            "enabled": true,
+            "order": 4
           }
         ]
       },
@@ -5975,30 +5981,21 @@ window.STATIC_DATA_FALLBACK = {
         "url": "about.html",
         "enabled": true,
         "order": 6
-      }
-    ],
-    "footerLinks": [
-      {
-        "label": "精品资料包",
-        "url": "premium.html",
-        "enabled": true
       },
       {
         "label": "作文批改",
         "url": "writing-review.html",
-        "enabled": true
+        "enabled": true,
+        "order": 7
       },
       {
         "label": "合作说明",
         "url": "cooperation.html",
-        "enabled": true
-      },
-      {
-        "label": "预约提醒",
-        "url": "waitlist.html",
-        "enabled": true
+        "enabled": true,
+        "order": 8
       }
     ],
+    "footerLinks": [],
     "homeSections": [
       {
         "id": "hero",

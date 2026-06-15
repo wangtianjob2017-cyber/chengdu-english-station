@@ -238,7 +238,7 @@ function renderNavigationFromConfig() {
   }
 
   const currentPage = getCurrentPageName();
-  const resourceCenterPages = new Set(["resources.html", "resource-detail.html", "grade-7.html", "grade-8.html", "grade-9.html", "topics.html"]);
+  const resourceCenterPages = new Set(["resources.html", "resource-detail.html", "grade-7.html", "grade-8.html", "grade-9.html", "topics.html", "premium.html"]);
   const items = appSiteConfig.navItems
     .filter((item) => item.enabled)
     .sort((a, b) => a.order - b.order);
@@ -269,29 +269,7 @@ function renderNavigationFromConfig() {
 }
 
 function renderFooterLinksFromConfig() {
-  if (!footerLinksContainers.length || !Array.isArray(appSiteConfig.footerLinks)) {
-    return;
-  }
-
-  const links = appSiteConfig.footerLinks.filter((item) => item.enabled);
-
-  footerLinksContainers.forEach((container) => {
-    const existingUrls = new Set([...container.querySelectorAll("a")].map((link) => link.getAttribute("href")));
-
-    links.forEach((item) => {
-      if (existingUrls.has(item.url)) {
-        return;
-      }
-
-      const li = document.createElement("li");
-      const link = document.createElement("a");
-      link.href = item.url;
-      link.textContent = item.label;
-      li.appendChild(link);
-      container.appendChild(li);
-      existingUrls.add(item.url);
-    });
-  });
+  // 页脚保持极简，不再动态追加和主导航重复或过多的入口。
 }
 
 function initPageBackLinks() {
