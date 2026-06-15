@@ -200,7 +200,7 @@ collections:
             required: false
             summary: "{{fields.label}}"
             collapsed: true
-            hint: "用于页脚补充入口，例如精品资料包、作文批改、合作说明。"
+            hint: "用于页脚补充入口，例如精品资料包、作文批改、合作说明。导航栏已有的首页、词汇中心、资料中心、备考文章、学习诊断、关于本站，不建议重复放到页脚。"
             fields:
               - { name: label, label: 名称, widget: string }
               - { name: url, label: 链接, widget: string }
