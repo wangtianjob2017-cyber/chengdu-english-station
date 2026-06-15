@@ -61,20 +61,20 @@
       "order": 5
     },
     {
-      "label": "关于本站",
-      "url": "about.html",
+      "label": "作文批改",
+      "url": "writing-review.html",
       "enabled": true,
       "order": 6
     },
     {
-      "label": "作文批改",
-      "url": "writing-review.html",
+      "label": "合作说明",
+      "url": "cooperation.html",
       "enabled": true,
       "order": 7
     },
     {
-      "label": "合作说明",
-      "url": "cooperation.html",
+      "label": "关于本站",
+      "url": "about.html",
       "enabled": true,
       "order": 8
     }
